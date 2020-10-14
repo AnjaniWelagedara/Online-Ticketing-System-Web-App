@@ -32,8 +32,6 @@ import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import firebase from "../../Config/FirebaseConfig";
-import Brightness4Icon from '@material-ui/icons/Brightness4';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
 import SidebarImage from "../../Images/sell-tickets-online-best-place.jpg"
 
 
