@@ -12,9 +12,12 @@ import {createMuiTheme, MuiThemeProvider, responsiveFontSizes} from "@material-u
 import {deepPurple} from "@material-ui/core/colors";
 import {compose} from "redux";
 import {connect} from "react-redux";
+import SnackBar from "./Components/Shared/SnackBar";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Backdrop from "@material-ui/core/Backdrop";
 import "./App.css"
 
-function App({location}) {
+function App({location, snackBar, backdrop}) {
     const [currentPath, setCurrentPath] = useState(location.pathname);
 
     const navBarVisibility = () => {
@@ -42,6 +45,15 @@ function App({location}) {
             <CssBaseline/>
             {(navBarVisibility()) ? <NavigationBar/> : <div/>}
 
+            {(snackBar.isShow)
+                ? <SnackBar msg={snackBar.msg}/>
+                : <React.Fragment/>
+            }
+
+            <Backdrop style={{zIndex: "2500"}} open={backdrop.isShow}>
+                <CircularProgress style={{color: "#fff"}}/>
+            </Backdrop>
+
             <Switch>
 
                 <EmployeePrivateRoute path="/dashboard/buses">
@@ -64,7 +76,10 @@ function App({location}) {
 
 const mapStateToProps = state => {
     console.log(state)
-    return {}
+    return {
+        backdrop: state.isShow,
+        snackBar: state.snackBar,
+    }
 };
 
 export default compose(
