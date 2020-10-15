@@ -7,12 +7,30 @@ export const addRoute = (details, callback) => {
         firestore.collection('routes').add(
            details
         ).then(() => {
-            dispatch({type: 'HIDE_BACKDROP'});
-            callback(
+            firestore.collection('timetables').add(
                 {
-                    status: true,
+                    routeNumber : details.routeNumber,
+                    station1 : details.start,
+                    station2 : details.end,
+                    trips : []
                 }
-            )
+            ).then(() => {
+                dispatch({type: 'HIDE_BACKDROP'});
+                callback(
+                    {
+                        status: true,
+                    }
+                )
+            }).catch(err => {
+                dispatch({type: 'HIDE_BACKDROP'});
+                console.log("Error occurred while FIREBASE DATA UPLOADING", err);
+                callback(
+                    {
+                        status: false,
+                        error: "Error occurred while FIREBASE DATA UPLOADING"
+                    }
+                )
+            });
         }).catch(err => {
             dispatch({type: 'HIDE_BACKDROP'});
             console.log("Error occurred while FIREBASE DATA UPLOADING", err);
