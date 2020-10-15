@@ -5,6 +5,7 @@ import DashBoard from "./Components/DashBoard";
 import BusesContainer from "./Components/Buses/BusesContainer";
 import RoutesContainer from "./Components/Routes/RoutesContainer";
 import TimetablesContainer from "./Components/TimeTables/TimetablesContainer";
+import TimeTableLargeView from "./Components/TimeTables/TimeTableLargeView";
 import EmployeePrivateRoute from "./Components/EmployeePrivateRoute";
 import NavigationBar from "./Components/Shared/NavigationBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -56,19 +57,20 @@ function App({location, snackBar, backdrop}) {
 
             <Switch>
 
-                <EmployeePrivateRoute path="/dashboard/buses">
+                <EmployeePrivateRoute exact path="/dashboard/buses">
                     <BusesContainer/>
                 </EmployeePrivateRoute>
-                <EmployeePrivateRoute path="/dashboard/routes">
+                <EmployeePrivateRoute exact path="/dashboard/routes">
                     <RoutesContainer/>
                 </EmployeePrivateRoute>
-                <EmployeePrivateRoute path="/dashboard/timetables">
+                <EmployeePrivateRoute exact path="/dashboard/timetables">
                     <TimetablesContainer/>
                 </EmployeePrivateRoute>
-                <EmployeePrivateRoute path="/dashboard">
+                <Route exact path={"/dashboard/timetable/:id"} component={TimeTableLargeView}/>
+                <EmployeePrivateRoute exact path="/dashboard">
                     <DashBoard/>
                 </EmployeePrivateRoute>
-                <Route path={"/"} component={Login}/>
+                <Route exact path={"/"} component={Login}/>
             </Switch>
         </MuiThemeProvider>
     );
