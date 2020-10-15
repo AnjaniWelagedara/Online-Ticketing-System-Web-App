@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TimetableSmallView(props) {
     const classes = useStyles();
-    const timetable = props.timetable;
+    const route = props.route;
 
     return (
         <Grid item xs={12} sm={6} md={4} lg={4} container justify={"center"}>
@@ -45,15 +45,15 @@ export default function TimetableSmallView(props) {
                 <CardHeader
                     avatar={
                         <Avatar aria-label="recipe" className={classes.avatar}>
-                            {`${timetable.station1.charAt(0).toUpperCase()}${timetable.station2.charAt(0).toUpperCase()}`}
+                            {`${route.start.charAt(0).toUpperCase()}${route.end.charAt(0).toUpperCase()}`}
                         </Avatar>
                     }
-                    title={timetable.routeNumber}
-                    subheader={`${timetable.station1} - ${timetable.station2}`}
+                    title={route.routeNumber}
+                    subheader={`${route.start} - ${route.end}`}
                 />
                 <CardActions disableSpacing>
                     <IconButton
-                        component={Link} to={`/dashboard/timetable/${timetable.id}`}
+                        component={Link} to={`/dashboard/timetable/${route.id}`}
                         style={{marginLeft : "auto"}}
                         color={"primary"}
                     >

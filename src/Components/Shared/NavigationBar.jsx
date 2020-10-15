@@ -38,6 +38,7 @@ import SidebarImage from "../../Images/sell-tickets-online-best-place.jpg"
 const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1,
+
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -119,15 +120,7 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(4),
     },
 
-    hover: {
-        "&:hover": {
-            backgroundColor: '#8e24aa',
-            color:'#fff'
-        },
-        margin : "5px",
-        borderRadius : "3px"
 
-    }
 
 }));
 
@@ -290,7 +283,7 @@ function NavigationBar(props) {
 
     return (
         <div className={classes.grow} >
-            <AppBar position="static"  color={"primary"}>
+            <AppBar position="static"  color={"primary"} style={{color : "#fff"}}>
                 <Toolbar>
                     {(auth.uid)?<IconButton
                         edge="start"

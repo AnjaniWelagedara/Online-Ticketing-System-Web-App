@@ -10,7 +10,7 @@ import EmployeePrivateRoute from "./Components/EmployeePrivateRoute";
 import NavigationBar from "./Components/Shared/NavigationBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {createMuiTheme, MuiThemeProvider, responsiveFontSizes} from "@material-ui/core/styles";
-import {deepPurple} from "@material-ui/core/colors";
+import {deepPurple, orange, yellow} from "@material-ui/core/colors";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import SnackBar from "./Components/Shared/SnackBar";
@@ -36,7 +36,7 @@ function App({location, snackBar, backdrop}) {
 
     const Theme = responsiveFontSizes(createMuiTheme({
         palette: {
-            primary: deepPurple,
+            primary: yellow,
             type: "dark",
         },
     }));

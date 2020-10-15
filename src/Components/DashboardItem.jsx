@@ -41,7 +41,6 @@ function DashboardItem(props) {
 
     let buses = props.buses;
     let routes = props.routes;
-    let timetables = props.timetables;
 
 
     const Redirect = (path) => {
@@ -138,7 +137,7 @@ function DashboardItem(props) {
                                 Time Tables
                             </Typography>
                             <Typography variant={"h5"} color={"textSecondary"} align={"right"}>
-                                { timetables && timetables.length }
+                                { routes && routes.length }
                             </Typography>
                         </Grid>
 
@@ -178,7 +177,6 @@ const mapStateToProps = (state) => {
     return {
         buses: state.firestore.ordered.buses,
         routes: state.firestore.ordered.routes,
-        timetables: state.firestore.ordered.timetables,
     }
 }
 
@@ -190,8 +188,6 @@ export default compose(
                 collection: 'buses',
             }, {
                 collection: 'routes',
-            }, {
-                collection: 'timetables',
             }
         ]
     })
