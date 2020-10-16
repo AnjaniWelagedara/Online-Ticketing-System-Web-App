@@ -44,12 +44,8 @@ export default class ConfirmDialog extends Component {
 
         if(this.state.type === "deleteRoute"){
             this.props.deleteRoute()
-        }else if(this.state.type === "view"){
-            this.props.editMaterialViewStatus()
-        }else if(this.state.type === "Announcement_Delete"){
-            this.props.parentFunction('Announcement')
-        }else {
-            this.props.parentFunction()
+        }else if(this.state.type === "deleteBus"){
+            this.props.deleteBus()
         }
     };
 
