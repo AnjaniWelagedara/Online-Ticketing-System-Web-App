@@ -244,7 +244,7 @@ function NavigationBar(props) {
         >
             <MenuItem className={classes.hover} onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem className={classes.hover} onClick={handleMenuClose}>My account</MenuItem>
-            <MenuItem className={classes.hover} onClick={() => {}}>Sign Out</MenuItem>
+            <MenuItem className={classes.hover} onClick={() => SignOut()}>Sign Out</MenuItem>
         </Menu>
     );
 
@@ -328,12 +328,6 @@ function NavigationBar(props) {
                     </div>
 
                     <div className={classes.sectionDesktop}>
-                        <Button color="inherit" component={Link} to={'/dashboard'}>Dashboard</Button>
-                        {
-                            (auth.uid)
-                                ? <Button autoCapitalize={false} color="inherit" onClick={() => SignOut()}>SignOut</Button>
-                                : <Button color="inherit" component={Link} to={'/signIn'}>SignIn</Button>
-                        }
                         <IconButton aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={4} color="secondary">
                                 <MailIcon />
