@@ -1,4 +1,4 @@
-import React, {Component, createRef} from 'react';
+import React, {Component, createRef, forwardRef} from 'react';
 import {connect} from "react-redux";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -6,9 +6,13 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import MaterialTable from "material-table";
 import Grid from '@material-ui/core/Grid';
 import Slide from "@material-ui/core/Slide";
-import ChipInput from 'material-ui-chip-input'
+import {blue, red, green} from "@material-ui/core/colors";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {addRoute, editRoute} from "../../Store/Actions/RouteActions";
 import AlertDialog from "./AlertDialog";
 
@@ -31,7 +35,7 @@ class RouteDialog extends Component {
             minutes: null,
             time: null,
             fare: null,
-            stations: []
+            data: []
         }
     }
 
@@ -45,6 +49,17 @@ class RouteDialog extends Component {
     };
 
     handleClickOpenForEdit = (route) => {
+
+        let StationArray = [];
+
+        route.stations.map(station => {
+            StationArray.push({
+                start : station.start,
+                end : station.end,
+                distance : station.distance,
+            })
+        })
+
         this.setState({
             open: true,
             purpose: "Edit",
@@ -57,7 +72,7 @@ class RouteDialog extends Component {
             minutes: route.minutes,
             time: route.time,
             fare: route.fare,
-            stations: route.stations,
+            data: StationArray,
         })
     };
 
@@ -98,7 +113,7 @@ class RouteDialog extends Component {
             hours: this.state.hours,
             minutes: this.state.minutes,
             fare: this.state.fare,
-            stations: this.state.stations,
+            stations: this.state.data,
         }
 
         if (this.state.purpose === "Create") {
@@ -148,22 +163,6 @@ class RouteDialog extends Component {
                 }
             })
         }
-    }
-
-    addChips(chips) {
-        let stations = this.state.stations;
-        stations.push(chips);
-        this.setState({
-            stations: stations
-        })
-    }
-
-    handleDeleteChip(chip, index) {
-        let stations = this.state.stations;
-        stations.splice(index, 1);
-        this.setState({
-            stations: stations
-        })
     }
 
     render() {
@@ -279,7 +278,7 @@ class RouteDialog extends Component {
                                     margin="dense"
                                     id="fare"
                                     name="fare"
-                                    label="Fare (Rs)"
+                                    label="Fare for one Km (Rs)"
                                     fullWidth
                                     value={this.state.fare}
                                     onChange={(e) => {
@@ -290,15 +289,83 @@ class RouteDialog extends Component {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <ChipInput
-                                label={"Stations"}
-                                fullWidth
-                                allowDuplicates={false}
-                                value={this.state.stations}
-                                onAdd={(chip) => this.addChips(chip)}
-                                onDelete={(chip, index) => this.handleDeleteChip(chip, index)}
-                            />
+                            <MaterialTable
+                                title="All Stations"
+                                columns={[
+                                    {title: "Start Station", field: "start"},
+                                    {title: "End Station", field: "end"},
+                                    {title: "Distance Between Stations", field: "distance", type : "numeric"},
+                                ]}
+                                data={this.state.data}
 
+                                icons={
+                                    {
+                                        Edit: forwardRef((props, ref) => <EditIcon  style={{color: green[500]}} {...props} ref={ref}/>),
+                                        Delete: forwardRef((props, ref) => <DeleteIcon  style={{color: red[500]}} {...props} ref={ref}/>),
+                                        Add: forwardRef((props, ref) => <AddCircleIcon  style={{color: blue[500]}} {...props} ref={ref}/>)
+
+                                    }
+                                }
+
+                                localization={{
+                                    body: {
+                                        editRow: {
+                                            saveTooltip: "Save",
+                                            cancelTooltip: "No",
+                                            deleteText: "Do you want to delete this Station Record."
+                                        },
+                                        addTooltip: "Add Station Record",
+                                        deleteTooltip: "Delete Station Record",
+                                        editTooltip: "Edit Station Record",
+                                        emptyDataSourceMessage: 'Station Record List Empty',
+                                    },
+                                    header: {
+                                        actions: 'Actions'
+                                    },
+                                }}
+
+                                options={{
+                                    actionsColumnIndex: -1,
+                                }}
+
+                                editable={{
+                                    onRowAdd: (newData) =>
+                                        new Promise((resolve) => {
+                                            setTimeout(() => {
+                                                resolve();
+                                                this.setState((prevState) => {
+                                                    const data = [...prevState.data];
+                                                    data.push(newData);
+                                                    return { ...prevState, data };
+                                                });
+                                            }, 600);
+                                        }),
+                                    onRowUpdate: (newData, oldData) =>
+                                        new Promise((resolve) => {
+                                            setTimeout(() => {
+                                                resolve();
+                                                if (oldData) {
+                                                    this.setState((prevState) => {
+                                                        const data = [...prevState.data];
+                                                        data[data.indexOf(oldData)] = newData;
+                                                        return { ...prevState, data };
+                                                    });
+                                                }
+                                            }, 600);
+                                        }),
+                                    onRowDelete: (oldData) =>
+                                        new Promise((resolve) => {
+                                            setTimeout(() => {
+                                                resolve();
+                                                this.setState((prevState) => {
+                                                    const data = [...prevState.data];
+                                                    data.splice(data.indexOf(oldData), 1);
+                                                    return { ...prevState, data };
+                                                });
+                                            }, 600);
+                                        }),
+                                }}
+                            />
                         </Grid>
 
                     </DialogContent>

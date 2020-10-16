@@ -8,6 +8,8 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {Container} from "@material-ui/core";
+import TripsSmallView from "./Trips/TripsSmallView";
+import Grid from "@material-ui/core/Grid";
 
 function TabPanel(props) {
     const {children, value, index, ...other} = props;
@@ -56,6 +58,7 @@ function TimeTableDaysView(props) {
     const classes = useStyles();
     const route = props.route;
 
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -68,6 +71,28 @@ function TimeTableDaysView(props) {
         setValue(0);
         setValue(1);
     };
+
+    function compare( a, b ) {
+        if ( a.arrival < b.arrival ){
+            return -1;
+        }
+        if ( a.arrival > b.arrival ){
+            return 1;
+        }
+        return 0;
+    }
+
+    const getTripsByDay = (day) => {
+        let trips = [];
+        route.trips.map(trip => {
+            if (trip.day === day) {
+                trips.push(trip)
+            }
+        })
+
+        trips.sort( compare );
+        return trips;
+    }
 
 
     return (
@@ -100,25 +125,54 @@ function TimeTableDaysView(props) {
                     onChangeIndex={handleChangeIndex}
                 >
                     <TabPanel value={value} index={0} dir={theme.direction}>
-                        CourseContent
+                        <Grid container direction={"row"}>
+                            {getTripsByDay("Monday").map(trip => {
+                                return <TripsSmallView trip={trip} route={route}/>
+                            })}
+                        </Grid>
+
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
-                        CourseDetails
+                        <Grid container direction={"row"}>
+                            {getTripsByDay("Tuesday").map(trip => {
+                                return <TripsSmallView trip={trip} route={route}/>
+                            })}
+                        </Grid>
                     </TabPanel>
                     <TabPanel value={value} index={2} dir={theme.direction}>
-                        ChatForumContainer
+                        <Grid container direction={"row"}>
+                            {getTripsByDay("Wednesday").map(trip => {
+                                return <TripsSmallView trip={trip} route={route}/>
+                            })}
+                        </Grid>
                     </TabPanel>
                     <TabPanel value={value} index={3} dir={theme.direction}>
-                        Admin
+                        <Grid container direction={"row"}>
+                            {getTripsByDay("Thursday").map(trip => {
+                                return <TripsSmallView trip={trip} route={route}/>
+                            })}
+                        </Grid>
                     </TabPanel>
                     <TabPanel value={value} index={4} dir={theme.direction}>
-                        Admin
+                        <Grid container direction={"row"}>
+                            {getTripsByDay("Friday").map(trip => {
+                                return <TripsSmallView trip={trip} route={route}/>
+                            })}
+                        </Grid>
                     </TabPanel>
                     <TabPanel value={value} index={5} dir={theme.direction}>
-                        Admin
+                        <Grid container direction={"row"}>
+                            {getTripsByDay("Saturday").map(trip => {
+                                return <TripsSmallView trip={trip} route={route}/>
+                            })}
+                        </Grid>
                     </TabPanel>
                     <TabPanel value={value} index={6} dir={theme.direction}>
-                        Admin
+                        <Grid container direction={"row"}>
+                            {getTripsByDay("Sunday").map(trip => {
+                                return <TripsSmallView trip={trip} route={route}/>
+                            })}
+                        </Grid>
                     </TabPanel>
                 </SwipeableViews>
             </React.Fragment>

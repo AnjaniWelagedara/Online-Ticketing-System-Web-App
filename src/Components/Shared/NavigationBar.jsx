@@ -23,16 +23,19 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from '@material-ui/core/Avatar';
-import {  deepPurple, purple } from '@material-ui/core/colors';
+import {deepPurple, purple, yellow} from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import AssignmentIcon from "@material-ui/icons/Assignment";
-import PostAddIcon from "@material-ui/icons/PostAdd";
-import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import firebase from "../../Config/FirebaseConfig";
 import SidebarImage from "../../Images/sell-tickets-online-best-place.jpg"
+
+import PaymentIcon from '@material-ui/icons/Payment';
+import DirectionsBusIcon from '@material-ui/icons/DirectionsBus';
+import SubtitlesIcon from '@material-ui/icons/Subtitles';
+import TimelineIcon from '@material-ui/icons/Timeline';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -116,12 +119,11 @@ const useStyles = makeStyles((theme) => ({
     },
 
     small: {
+        backgroundColor: yellow[600],
+        color: '#fff',
         width: theme.spacing(4),
         height: theme.spacing(4),
     },
-
-
-
 }));
 
 function NavigationBar(props) {
@@ -164,11 +166,11 @@ function NavigationBar(props) {
             }}>
                 <Grid  container>
                     <Container style={{marginTop : "40px"}}>
-                        <Avatar src={auth.photoURL} />
-                        <Typography className={classes.text} variant="body2" noWrap>
+                        <Avatar className={classes.small} src={auth.photoURL} />
+                        <Typography color={"primary"}  variant="body2" noWrap>
                             {auth.displayName}
                         </Typography>
-                        <Typography className={classes.text}  variant="caption" noWrap>
+                        <Typography color={"primary"}   variant="caption" noWrap>
                             {auth.email}
                         </Typography>
                     </Container>
@@ -176,23 +178,35 @@ function NavigationBar(props) {
             </div>
 
             <List >
-                <ListItem  button component={Link} to={"/dashboard/createCourse"}>
+                <ListItem  button component={Link} to={"/dashboard"}>
                     <ListItemIcon>
-                        <AssignmentIcon style={{color : "green"}} />
+                        <AssignmentIcon style={{color : "yellow"}} />
                     </ListItemIcon>
-                    <ListItemText>Create Class</ListItemText>
+                    <ListItemText>Dashboard</ListItemText>
                 </ListItem>
-                <ListItem button component={Link} to="/storeManager/addProducts">
+                <ListItem button component={Link} to="/dashboard/buses">
                     <ListItemIcon>
-                        <PostAddIcon style={{color : "orange"}} />
+                        <DirectionsBusIcon style={{color : "orange"}} />
                     </ListItemIcon>
-                    <ListItemText>All Classes</ListItemText>
+                    <ListItemText>Buses</ListItemText>
                 </ListItem>
-                <ListItem button component={Link} to="/storeManager/allDiscounts">
+                <ListItem button component={Link} to="/dashboard/routes">
                     <ListItemIcon>
-                        <LocalOfferIcon style={{color : "purple"}}/>
+                        <TimelineIcon style={{color : "green"}}/>
                     </ListItemIcon>
-                    <ListItemText>Revenue</ListItemText>
+                    <ListItemText>Routes</ListItemText>
+                </ListItem>
+                <ListItem button component={Link} to="/dashboard/timetables">
+                    <ListItemIcon>
+                        <SubtitlesIcon style={{color : "red"}}/>
+                    </ListItemIcon>
+                    <ListItemText>Time Tables</ListItemText>
+                </ListItem>
+                <ListItem button component={Link} to="/dashboard">
+                    <ListItemIcon>
+                        <PaymentIcon style={{color : "blue"}}/>
+                    </ListItemIcon>
+                    <ListItemText>Tokens</ListItemText>
                 </ListItem>
             </List>
             <Divider />

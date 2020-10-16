@@ -6,7 +6,9 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {compose} from "redux";
 import {connect} from "react-redux";
-import {firestoreConnect} from "react-redux-firebase";
+import {firestoreConnect, isLoaded} from "react-redux-firebase";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import {withRouter} from "react-router-dom";
 
 
@@ -23,24 +25,33 @@ function TimetablesContainer(props) {
     let routes = props.routes;
 
     return (
-        <Container
-            maxWidth="lg"
-            style={{marginBottom: "50px", marginTop: "50px"}}
-        >
-            <Grid container style={{marginTop: "50px"}}>
-                <Grid xs={12} item>
-                    <Typography align={"center"} variant={"h4"} gutterBottom>
-                        All Timetables
-                    </Typography>
-                </Grid>
-            </Grid>
+        <React.Fragment>
+            {(!isLoaded(routes))
+                ? <Backdrop open={true}>
+                    <CircularProgress style={{color: "#fff"}}/>
+                </Backdrop>
+                : <Container
+                    maxWidth="lg"
+                    style={{marginBottom: "50px", marginTop: "50px"}}
+                >
+                    <Grid container style={{marginTop: "50px"}}>
+                        <Grid xs={12} item>
+                            <Typography align={"center"} variant={"h4"} gutterBottom>
+                                All Timetables
+                            </Typography>
+                        </Grid>
+                    </Grid>
 
-            <Grid container direction={"row"}>
-                {routes && routes.map(route => {
-                    return <TimetableSmallView key={route.id} route={route} />
-                })}
-            </Grid>
-        </Container>
+                    <Grid container direction={"row"}>
+                        {routes && routes.map(route => {
+                            return <TimetableSmallView key={route.id} route={route} />
+                        })}
+                    </Grid>
+                </Container>
+            }
+        </React.Fragment>
+
+
     );
 }
 

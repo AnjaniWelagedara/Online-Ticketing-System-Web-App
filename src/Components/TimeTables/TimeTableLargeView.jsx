@@ -61,7 +61,7 @@ function TimeTableLargeView(props) {
                     <Paper elevation={5} className={classes.paperTop}>
                         <Grid container justify={"center"} alignItems={"center"} spacing={1}>
                             <Typography variant="h5" align={"left"} style={{marginLeft: "10px"}}>
-                                {route.routeNumber} : {route.start} - {route.end}
+                                {route.routeNumber} : {route.start} - {route.end} : {route.hours} Hours {route.minutes} Minutes
                             </Typography>
                         </Grid>
                     </Paper>

@@ -9,7 +9,7 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import {deepPurple} from '@material-ui/core/colors';
+import {deepPurple, yellow} from '@material-ui/core/colors';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
         transform: 'rotate(180deg)',
     },
     avatar: {
-        backgroundColor: deepPurple[500],
+        backgroundColor: yellow[600],
         color: '#fff'
     },
 }));
@@ -85,7 +85,7 @@ function RouteSmallView(props) {
             <Card className={classes.root + " hoverable"}>
                 <CardHeader
                     avatar={
-                        <Avatar aria-label="recipe" className={classes.avatar}>
+                        <Avatar  aria-label="recipe" className={classes.avatar}>
                             {`${route.start.charAt(0).toUpperCase()}${route.end.charAt(0).toUpperCase()}`}
                         </Avatar>
                     }
@@ -98,18 +98,19 @@ function RouteSmallView(props) {
                             <Chip variant="outlined" size={"small"} label={`Distance - ${route.distance} Km`}
                                   icon={<TimelineIcon/>}/>
                         </Grid>
-                        <Grid item>
-                            <Chip variant="outlined" size={"small"} label={`Fare - Rs:${route.fare}.00/-`}
+                        <Grid item xs={12}>
+                            <Chip variant="outlined" size={"small"} label={`Fare for Km - Rs:${route.fare}.00/-`}
                                   icon={<AttachMoneyIcon/>}/>
                         </Grid>
-                        <Grid item>
+                        <Grid item xs={12}>
                             <Chip variant="outlined" size={"small"}
                                   label={`Duration - ${route.hours} Hours ${route.minutes} Minutes`}
                                   icon={<AccessTimeIcon/>}/>
                         </Grid>
                     </Grid>
+                    <hr/>
                 </CardContent>
-                <CardActions disableSpacing>
+                <CardActions disableSpacing style={{marginTop : "-30px"}}>
                     <IconButton
                         aria-label="add to favorites"
                         style={{color: "green"}}
@@ -149,7 +150,7 @@ function RouteSmallView(props) {
                                 style={{margin : "5px"}}
                                 variant="outlined"
                                 size={"small"}
-                                label={station}
+                                label={station.start + " - " + station.end + " (" + station.distance + " Km)"}
                                 icon={<HomeWorkIcon/>}/>
                         })}
                     </CardContent>

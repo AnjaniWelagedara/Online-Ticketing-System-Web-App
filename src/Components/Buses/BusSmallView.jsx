@@ -80,33 +80,29 @@ function BusSmallView(props) {
                 <CardContent>
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
-                            <Typography align={"center"} variant={"h5"}>{bus.busNumber}</Typography>
+                            <Typography color={"primary"} align={"center"} variant={"h5"}>{bus.busNumber}</Typography>
                         </Grid>
                         <Grid item xs={6}>
                             <Chip variant="outlined" size={"small"}
                                   label={`Route Number - ${bus.routeNumber}`}
-                                  color={"primary"}
                                   icon={<TimelineIcon/>}/>
                         </Grid>
                         <Grid item xs={6}>
                             <Chip variant="outlined" size={"small"}
                                   label={`Condition - ${bus.type}`}
-                                  color={"primary"}
                                   icon={<AssignmentLateIcon/>}/>
                         </Grid>
                         <Grid item xs={6}>
                             <Chip variant="outlined" size={"small"}
-                                  color={"primary"}
                                   label={`Sheets - ${bus.sheets}`}
                                   icon={<AirlineSeatReclineNormalIcon/>}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Chip color={"primary"} variant="outlined" size={"small"}
+                            <Chip  variant="outlined" size={"small"}
                                   label={`Pass Code - ${bus.passcode}`}
                                   icon={<DeveloperModeIcon/>}/>
                         </Grid><Grid item xs={12}>
                             <Chip
-                                color={"primary"}
                                 variant="outlined" size={"small"}
                                   label={`Driver - ${bus.driver}`}
                                   icon={<AccountBoxIcon/>}/>
