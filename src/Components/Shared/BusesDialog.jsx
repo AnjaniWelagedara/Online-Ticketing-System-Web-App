@@ -1,40 +1,67 @@
-
 import React, {Component, createRef} from "react";
-// import AlertDialog from "./AlertDialog";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import ChipInput from "material-ui-chip-input";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import {addBus} from "../../Store/Actions/BusActions";
+import {addBus, editBus} from "../../Store/Actions/BusActions";
 import AlertDialog from "./AlertDialog";
 import {connect} from "react-redux";
-//import {addRoute, editRoute} from "../../Store/Actions/RouteActions";
+import Slide from "@material-ui/core/Slide";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import {editRoute} from "../../Store/Actions/RouteActions";
 
-// import Transition from "react-transition-group/Transition";
-class BusesDialog extends Component{
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+});
+
+class BusesDialog extends Component {
 
     constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             open: false,
             purpose: "Create",
-            busNumber:""
-
+            id : null,
+            routes: this.props.routes,
+            busNumber: null,
+            type: null,
+            sheets: null,
+            routeNumber: null,
+            driver: null,
+            passcode: null,
         }
     }
 
     alertDialog = createRef();
 
 
-    handleClickOpenForCreate = () => {
+    handleClickOpenForCreate = (routes) => {
         this.setState({
             purpose: "Create",
             open: true,
-            busNumber:""
+            routes: routes
+        })
+    };
+
+    handleClickOpenForEdit = (bus, routes) => {
+        this.setState({
+            open: true,
+            purpose: "Edit",
+            id : bus.id,
+            routes: routes,
+            busNumber: bus.busNumber,
+            type: bus.type,
+            sheets: bus.sheets,
+            routeNumber: bus.routeNumber,
+            driver: bus.driver,
+            passcode: bus.passcode,
         })
     };
 
@@ -42,7 +69,14 @@ class BusesDialog extends Component{
         this.setState({
             open: false,
             purpose: "Create",
-
+            id : null,
+            routes: this.props.routes,
+            busNumber: null,
+            type: null,
+            sheets: null,
+            routeNumber: null,
+            driver: null,
+            passcode: null,
         })
     };
 
@@ -52,52 +86,60 @@ class BusesDialog extends Component{
         })
     }
 
-    submit =()=>{
-        let details={
-            busNumber: this.state.busNumber
+    submit = () => {
+        let details = {
+            busNumber: this.state.busNumber,
+            routeNumber: this.state.routeNumber,
+            type: this.state.type,
+            sheets: this.state.sheets,
+            driver: this.state.driver,
+            passcode: this.state.passcode
         }
 
-        this.props.addBus(details, res => {
-            if (res.status) {
-                this.props.handleSnackBar({
-                    type: "SHOW_SNACKBAR",
-                    msg: 'Route Added Successfully!'
-                })
-                this.setState({
-                    open: false,
-                    purpose: "Create",
-                    busNumber: null,
-
-                })
-            } else {
-                this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Create Bus Again`)
-            }
-        })
-
+        if(this.state.purpose === "Create"){
+            this.props.addBus(details, res => {
+                if (res.status) {
+                    this.props.handleSnackBar({
+                        type: "SHOW_SNACKBAR",
+                        msg: 'Bus Added Successfully!'
+                    })
+                    this.handleClose()
+                } else {
+                    this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Create Bus Again`)
+                }
+            })
+        }else {
+            this.props.editBus(this.state.id, details, res => {
+                if (res.status) {
+                    this.props.handleSnackBar({
+                        type: "SHOW_SNACKBAR",
+                        msg: 'Bus Edited Successfully!'
+                    })
+                    this.handleClose()
+                } else {
+                    this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Update Bus Again`)
+                }
+            })
+        }
     }
 
-
-
-
-
     render() {
-        return(
+        return (
             <React.Fragment>
                 {<AlertDialog ref={this.alertDialog}/>}
                 <Dialog
                     open={this.state.open}
                     aria-labelledby="form-dialog-title"
-                    // TransitionComponent={Transition}
+                    TransitionComponent={Transition}
                     maxWidth={"md"}
                     fullWidth={true}
 
                 >
                     <DialogTitle id="form-dialog-title"> Route</DialogTitle>
                     <DialogContent>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} sm={12} md={6}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={12} md={4}>
                                 <TextField
-                                    margin="dense"
                                     id="busNumber"
                                     name="busNumber"
                                     label="Bus Number"
@@ -108,113 +150,83 @@ class BusesDialog extends Component{
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={12} md={6}>
+                            <Grid item xs={12} sm={12} md={4}>
+                                <FormControl variant="standard" fullWidth>
+                                    <InputLabel id="demo-simple-select-outlined-label">Route Number</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        name={"routeNumber"}
+                                        value={this.state.routeNumber}
+                                        onChange={(e) => this.handleInput(e)}
+
+                                    >
+                                        <MenuItem value=""><em>None</em></MenuItem>
+                                        {this.state.routes && this.state.routes.map(route => {
+                                            return <MenuItem key={route.id}
+                                                             value={route.routeNumber}>{route.routeNumber}</MenuItem>
+                                        })}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={4}>
+                                <FormControl variant="standard" fullWidth>
+                                    <InputLabel id="demo-simple-select-outlined-label">Type</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        name={"type"}
+                                        value={this.state.type}
+                                        onChange={(e) => this.handleInput(e)}
+
+                                    >
+                                        <MenuItem value=""><em>None</em></MenuItem>
+                                        <MenuItem key={"Non A/C"} value={"Non A/C"}>{"Non A/C"}</MenuItem>
+                                        <MenuItem key={"A/C"} value={"A/C"}>{" A/C"}</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                        </Grid>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={12} md={4}>
                                 <TextField
                                     type={"number"}
-                                    margin="dense"
-                                    id="distance"
-                                    name="distance"
-                                    label="Distance (Km)"
+                                    id="sheets"
+                                    name="sheets"
+                                    label="Sheets Count"
                                     fullWidth
-                                   /* value={this.state.distance}
+                                    value={this.state.sheets}
                                     onChange={(e) => {
                                         this.handleInput(e)
-                                    }}*/
+                                    }}
                                 />
                             </Grid>
-                        </Grid>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} sm={12} md={6}>
+                            <Grid item xs={12} sm={12} md={4}>
                                 <TextField
-                                    margin="dense"
-                                    id="start"
-                                    name="start"
-                                    label="Start Station"
+                                    id="driver"
+                                    name="driver"
+                                    label="Driver Name"
                                     fullWidth
-                                   /* value={this.state.start}
+                                    value={this.state.driver}
                                     onChange={(e) => {
                                         this.handleInput(e)
-                                    }}*/
+                                    }}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={12} md={6}>
-                                <TextField
-                                    margin="dense"
-                                    id="end"
-                                    name="end"
-                                    label="End Station"
-                                    fullWidth
-                                   /* value={this.state.end}
-                                    onChange={(e) => {
-                                        this.handleInput(e)
-                                    }}*/
-                                />
-                            </Grid>
-                        </Grid>
-
-                        <Grid container spacing={3}>
-
-                            <Grid item xs={12} sm={12} md={6}>
-                                <Grid container spacing={3}>
-                                    <Grid item xs={12} sm={12} md={6}>
-                                        <TextField
-                                            type={"number"}
-                                            margin="dense"
-                                            id="hours"
-                                            name="hours"
-                                            label="Duration (Hours)"
-                                            fullWidth
-                                            /*value={this.state.hours}
-                                            onChange={(e) => {
-                                                this.handleInput(e)
-                                            }}*/
-                                        />
-                                    </Grid>
-
-                                    <Grid item xs={12} sm={12} md={6}>
-                                        <TextField
-                                            type={"number"}
-                                            margin="dense"
-                                            id="minutes"
-                                            name="minutes"
-                                            label="Duration (Minutes)"
-                                            fullWidth
-                                            /*value={this.state.minutes}
-                                            onChange={(e) => {
-                                                this.handleInput(e)
-                                            }}*/
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={6}>
+                            <Grid item xs={12} sm={12} md={4}>
                                 <TextField
                                     type={"number"}
-                                    margin="dense"
-                                    id="fare"
-                                    name="fare"
-                                    label="Fare (Rs)"
+                                    id="passcode"
+                                    name="passcode"
+                                    label="Passcode"
                                     fullWidth
-                                  /*  value={this.state.fare}
+                                    value={this.state.passcode}
                                     onChange={(e) => {
                                         this.handleInput(e)
-                                    }}*/
+                                    }}
                                 />
                             </Grid>
                         </Grid>
-
-                        <Grid item xs={12}>
-                            <ChipInput
-                                label={"Stations"}
-                                fullWidth
-                                allowDuplicates={false}
-                               /* value={this.state.stations}
-                                onAdd={(chip) => this.addChips(chip)}
-                                onDelete={(chip, index) => this.handleDeleteChip(chip, index)}*/
-                            />
-
-                        </Grid>
-
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => this.handleClose()}>
@@ -232,17 +244,13 @@ class BusesDialog extends Component{
 
 }
 
-const mapStateToProps = (state) => {
-    return {
-        email: state.firebase.auth.email
-    }
-};
 
 const mapDispatchToProps = (dispatch) => {
     return {
         handleSnackBar: (status) => dispatch(status),
         addBus: (details, callback) => dispatch(addBus(details, callback)),
+        editBus: (id, details, callback) => dispatch(editBus(id, details, callback)),
     }
 };
-export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(BusesDialog)
+export default connect(null, mapDispatchToProps, null, {forwardRef: true})(BusesDialog)
 
