@@ -1,16 +1,23 @@
 import React, {Component, createRef} from 'react';
 import {connect} from "react-redux";
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import Slide from "@material-ui/core/Slide";
-import ChipInput from 'material-ui-chip-input'
-import {addRoute, editRoute} from "../../Store/Actions/RouteActions";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import {addTrip, editRoute} from "../../Store/Actions/RouteActions";
 import AlertDialog from "./AlertDialog";
+import {
+    MuiPickersUtilsProvider,
+    KeyboardTimePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -23,24 +30,25 @@ class TripsDialog extends Component {
         this.state = {
             open: false,
             purpose: "Create",
-            routeNumber: null,
-            distance: null,
-            start: null,
-            end: null,
-            hours: null,
-            minutes: null,
-            time: null,
-            fare: null,
-            stations: []
+            route: this.props.route,
+            buses: this.props.buses,
+            busNumber: null,
+            day: null,
+            startStation: null,
+            endStation: null,
+            arrival: null,
+            duration: null,
         }
     }
 
     alertDialog = createRef();
 
-    handleClickOpenForCreate = () => {
+    handleClickOpenForCreate = (route, buses) => {
         this.setState({
             purpose: "Create",
             open: true,
+            route: route,
+            buses: buses,
         })
     };
 
@@ -48,7 +56,7 @@ class TripsDialog extends Component {
         this.setState({
             open: true,
             purpose: "Edit",
-            id : route.id,
+            id: route.id,
             routeNumber: route.routeNumber,
             distance: route.distance,
             start: route.start,
@@ -56,8 +64,6 @@ class TripsDialog extends Component {
             hours: route.hours,
             minutes: route.minutes,
             time: route.time,
-            fare: route.fare,
-            stations: route.stations,
         })
     };
 
@@ -83,45 +89,27 @@ class TripsDialog extends Component {
         })
     }
 
-    handlePublish = (e) => {
-        this.setState({
-            [e.target.name]: e.target.checked
-        })
-    };
 
     submit = () => {
         let details = {
-            routeNumber: this.state.routeNumber,
-            start: this.state.start,
-            end: this.state.end,
-            distance: this.state.distance,
-            hours: this.state.hours,
-            minutes: this.state.minutes,
-            fare: this.state.fare,
-            stations: this.state.stations,
+            busNumber: this.state.busNumber,
+            day: this.state.day,
+            startStation: this.state.startStation,
+            endStation: this.state.endStation,
+            arrival: this.state.arrival,
+            duration: this.state.duration,
         }
 
+
         if (this.state.purpose === "Create") {
-            this.props.addRoute(details, res => {
+            this.props.addTrip(this.state.route.id, details, res => {
                 if (res.status) {
                     this.props.handleSnackBar({
                         type: "SHOW_SNACKBAR",
-                        msg: 'Route Added Successfully!'
-                    })
-                    this.setState({
-                        open: false,
-                        purpose: "Create",
-                        routeNumber: null,
-                        start: null,
-                        end: null,
-                        hours: null,
-                        minutes: null,
-                        time: null,
-                        fare: null,
-                        stations: []
+                        msg: 'Trip Added Successfully!'
                     })
                 } else {
-                    this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Create Route Again`)
+                    this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Create Trip Again`)
                 }
             })
         } else {
@@ -150,21 +138,23 @@ class TripsDialog extends Component {
         }
     }
 
-    addChips(chips) {
-        let stations = this.state.stations;
-        stations.push(chips);
-        this.setState({
-            stations: stations
+    getBuses = () => {
+
+        let selectedBuses = [];
+        this.state.buses && this.state.buses.map(bus => {
+            if (bus.routeNumber === this.state.route.routeNumber) {
+                selectedBuses.push(bus)
+            }
         })
+        return selectedBuses;
     }
 
-    handleDeleteChip(chip, index) {
-        let stations = this.state.stations;
-        stations.splice(index, 1);
+    updateStartDate = (date) => {
         this.setState({
-            stations: stations
-        })
-    }
+                arrival: date
+            }
+        )
+    };
 
     render() {
         return (
@@ -178,136 +168,111 @@ class TripsDialog extends Component {
                     fullWidth={true}
 
                 >
-                    <DialogTitle id="form-dialog-title">{this.state.purpose} Route</DialogTitle>
+                    <DialogTitle id="form-dialog-title">{this.state.purpose} Trip</DialogTitle>
                     <DialogContent>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} sm={12} md={6}>
-                                <TextField
-                                    margin="dense"
-                                    id="routeNumber"
-                                    name="routeNumber"
-                                    label="Route Number"
-                                    fullWidth
-                                    value={this.state.routeNumber}
-                                    onChange={(e) => {
-                                        this.handleInput(e)
-                                    }}
-                                />
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6} md={6}>
+                                <FormControl variant="standard" fullWidth>
+                                    <InputLabel id="demo-simple-select-outlined-label">Bus</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        name={"busNumber"}
+                                        value={this.state.busNumber}
+                                        onChange={(e) => this.handleInput(e)}
+
+                                    >
+                                        <MenuItem value=""><em>None</em></MenuItem>
+                                        {this.getBuses().map(bus => {
+                                            return <MenuItem key={bus.busNumber}
+                                                             value={bus.busNumber}>{bus.busNumber}</MenuItem>
+                                        })}
+                                    </Select>
+                                </FormControl>
                             </Grid>
-                            <Grid item xs={12} sm={12} md={6}>
-                                <TextField
-                                    type={"number"}
-                                    margin="dense"
-                                    id="distance"
-                                    name="distance"
-                                    label="Distance (Km)"
-                                    fullWidth
-                                    value={this.state.distance}
-                                    onChange={(e) => {
-                                        this.handleInput(e)
-                                    }}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} sm={12} md={6}>
-                                <TextField
-                                    margin="dense"
-                                    id="start"
-                                    name="start"
-                                    label="Start Station"
-                                    fullWidth
-                                    value={this.state.start}
-                                    onChange={(e) => {
-                                        this.handleInput(e)
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={6}>
-                                <TextField
-                                    margin="dense"
-                                    id="end"
-                                    name="end"
-                                    label="End Station"
-                                    fullWidth
-                                    value={this.state.end}
-                                    onChange={(e) => {
-                                        this.handleInput(e)
-                                    }}
-                                />
+                            <Grid item xs={12} sm={6} md={6}>
+                                <FormControl variant="standard" fullWidth>
+                                    <InputLabel id="demo-simple-select-outlined-label">Day</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        name={"day"}
+                                        value={this.state.day}
+                                        onChange={(e) => this.handleInput(e)}
+
+                                    >
+                                        <MenuItem value=""><em>None</em></MenuItem>
+                                        <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
+                                        <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
+                                        <MenuItem key={"Wednesday"} value={"Wednesday"}>Wednesday</MenuItem>
+                                        <MenuItem key={"Thursday"} value={"Thursday"}>Thursday</MenuItem>
+                                        <MenuItem key={"Friday"} value={"Friday"}>Friday</MenuItem>
+                                        <MenuItem key={"Saturday"} value={"Saturday"}>Saturday</MenuItem>
+                                        <MenuItem key={"Sunday"} value={"Sunday"}>Sunday</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </Grid>
                         </Grid>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={12} md={4}>
+                                <FormControl variant="standard" fullWidth>
+                                    <InputLabel id="demo-simple-select-outlined-label">Start Station</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        name={"startStation"}
+                                        value={this.state.startStation}
+                                        onChange={(e) => this.handleInput(e)}
 
-                        <Grid container spacing={3}>
-
-                            <Grid item xs={12} sm={12} md={6}>
-                                <Grid container spacing={3}>
-                                    <Grid item xs={12} sm={12} md={6}>
-                                        <TextField
-                                            type={"number"}
-                                            margin="dense"
-                                            id="hours"
-                                            name="hours"
-                                            label="Duration (Hours)"
-                                            fullWidth
-                                            value={this.state.hours}
-                                            onChange={(e) => {
-                                                this.handleInput(e)
-                                            }}
-                                        />
-                                    </Grid>
-
-                                    <Grid item xs={12} sm={12} md={6}>
-                                        <TextField
-                                            type={"number"}
-                                            margin="dense"
-                                            id="minutes"
-                                            name="minutes"
-                                            label="Duration (Minutes)"
-                                            fullWidth
-                                            value={this.state.minutes}
-                                            onChange={(e) => {
-                                                this.handleInput(e)
-                                            }}
-                                        />
-                                    </Grid>
-                                </Grid>
+                                    >
+                                        <MenuItem value=""><em>None</em></MenuItem>
+                                        <MenuItem key={this.state.route.start}
+                                                  value={this.state.route.start}>{this.state.route.start}</MenuItem>
+                                        <MenuItem key={this.state.route.end}
+                                                  value={this.state.route.end}>{this.state.route.end}</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </Grid>
-                            <Grid item xs={12} sm={12} md={6}>
-                                <TextField
-                                    type={"number"}
-                                    margin="dense"
-                                    id="fare"
-                                    name="fare"
-                                    label="Fare (Rs)"
-                                    fullWidth
-                                    value={this.state.fare}
-                                    onChange={(e) => {
-                                        this.handleInput(e)
-                                    }}
-                                />
+                            <Grid item xs={12} sm={12} md={4}>
+                                <FormControl variant="standard" fullWidth>
+                                    <InputLabel id="demo-simple-select-outlined-label">End Station</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        name={"endStation"}
+                                        value={this.state.endStation}
+                                        onChange={(e) => this.handleInput(e)}
+                                    >
+                                        <MenuItem value=""><em>None</em></MenuItem>
+                                        <MenuItem key={this.state.route.start}
+                                                  value={this.state.route.start}>{this.state.route.start}</MenuItem>
+                                        <MenuItem key={this.state.route.end}
+                                                  value={this.state.route.end}>{this.state.route.end}</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={4} style={{marginTop : "-16px"}}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardTimePicker
+                                        margin="normal"
+                                        id="time-picker"
+                                        label="Arrival Time"
+                                        value={this.state.arrival}
+                                        onChange={(date) => this.updateStartDate(date)}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change time',
+                                        }}
+                                    />
+                                </MuiPickersUtilsProvider>
                             </Grid>
                         </Grid>
-
-                        <Grid item xs={12}>
-                            <ChipInput
-                                label={"Stations"}
-                                fullWidth
-                                allowDuplicates={false}
-                                value={this.state.stations}
-                                onAdd={(chip) => this.addChips(chip)}
-                                onDelete={(chip, index) => this.handleDeleteChip(chip, index)}
-                            />
-
-                        </Grid>
-
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => this.handleClose()}>
                             Cancel
                         </Button>
                         <Button onClick={() => this.submit()}>
-                            {this.state.purpose} Route
+                            {this.state.purpose} Trip
                         </Button>
                     </DialogActions>
                 </Dialog>
@@ -317,18 +282,12 @@ class TripsDialog extends Component {
 }
 
 
-const mapStateToProps = (state) => {
-    return {
-        email: state.firebase.auth.email
-    }
-};
-
 const mapDispatchToProps = (dispatch) => {
     return {
         handleSnackBar: (status) => dispatch(status),
-        addRoute: (details, callback) => dispatch(addRoute(details, callback)),
+        addTrip: (id, details, callback) => dispatch(addTrip(id, details, callback)),
         editRoute: (id, details, callback) => dispatch(editRoute(id, details, callback)),
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(TripsDialog)
+export default connect(null, mapDispatchToProps, null, {forwardRef: true})(TripsDialog)

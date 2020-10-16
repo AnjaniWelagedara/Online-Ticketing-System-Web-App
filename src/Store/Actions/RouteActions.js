@@ -5,32 +5,17 @@ export const addRoute = (details, callback) => {
         const firestore = getFirestore();
 
         firestore.collection('routes').add(
-           details
+            {
+                ...details,
+                trips : []
+            }
         ).then(() => {
-            firestore.collection('timetables').add(
+            dispatch({type: 'HIDE_BACKDROP'});
+            callback(
                 {
-                    routeNumber : details.routeNumber,
-                    station1 : details.start,
-                    station2 : details.end,
-                    trips : []
+                    status: true,
                 }
-            ).then(() => {
-                dispatch({type: 'HIDE_BACKDROP'});
-                callback(
-                    {
-                        status: true,
-                    }
-                )
-            }).catch(err => {
-                dispatch({type: 'HIDE_BACKDROP'});
-                console.log("Error occurred while FIREBASE DATA UPLOADING", err);
-                callback(
-                    {
-                        status: false,
-                        error: "Error occurred while FIREBASE DATA UPLOADING"
-                    }
-                )
-            });
+            )
         }).catch(err => {
             dispatch({type: 'HIDE_BACKDROP'});
             console.log("Error occurred while FIREBASE DATA UPLOADING", err);
@@ -95,6 +80,51 @@ export const editRoute = (id, details, callback) => {
                 {
                     status: false,
                     error: "Error occurred while FIREBASE DATA UPDATING"
+                }
+            )
+        })
+
+    }
+};
+
+export const addTrip = (id, details, callback) => {
+    return (dispatch, getState, {getFirestore}) => {
+
+        console.log("id",id)
+
+        dispatch({type: 'SHOW_BACKDROP'});
+        const firestore = getFirestore();
+
+        firestore.collection("routes").doc(id).get()
+            .then(res => {
+                let route = res.data();
+                route.trips.push(details);
+
+                firestore.collection('routes').doc(id).set(route, {merge: true})
+                    .then((res) => {
+                        dispatch({type: 'HIDE_BACKDROP'});
+                        callback(
+                            {
+                                status: true
+                            }
+                        )
+                    }).catch((err) => {
+                    console.log(err)
+                    dispatch({type: 'HIDE_BACKDROP'});
+                    callback(
+                        {
+                            status: false,
+                            error: err
+                        }
+                    )
+                })
+            }).catch(error => {
+            console.log(error)
+            dispatch({type: 'HIDE_BACKDROP'});
+            callback(
+                {
+                    status: false,
+                    error: error
                 }
             )
         })

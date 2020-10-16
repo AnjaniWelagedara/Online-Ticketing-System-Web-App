@@ -4,7 +4,6 @@ import TimetableSmallView from "./TimetableSmallView";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import RouteDialog from "../Shared/RouteDialog";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {firestoreConnect} from "react-redux-firebase";
@@ -21,16 +20,13 @@ const useStyles = makeStyles((theme) => ({
 
 function TimetablesContainer(props) {
     const classes = useStyles();
-    let timetables = props.timetables;
-
-    const addRouteDialogRef = useRef();
+    let routes = props.routes;
 
     return (
         <Container
             maxWidth="lg"
             style={{marginBottom: "50px", marginTop: "50px"}}
         >
-            <RouteDialog ref={addRouteDialogRef}/>
             <Grid container style={{marginTop: "50px"}}>
                 <Grid xs={12} item>
                     <Typography align={"center"} variant={"h4"} gutterBottom>
@@ -40,8 +36,8 @@ function TimetablesContainer(props) {
             </Grid>
 
             <Grid container direction={"row"}>
-                {timetables && timetables.map(timetable => {
-                    return <TimetableSmallView key={timetable.id} timetable={timetable} />
+                {routes && routes.map(route => {
+                    return <TimetableSmallView key={route.id} route={route} />
                 })}
             </Grid>
         </Container>
@@ -50,7 +46,7 @@ function TimetablesContainer(props) {
 
 const mapStateToProps = (state) => {
     return {
-        timetables: state.firestore.ordered.timetables,
+        routes: state.firestore.ordered.routes,
     }
 }
 
@@ -59,8 +55,9 @@ export default compose(
     firestoreConnect((props) => {
         return [
             {
-                collection: 'timetables',
-            }
+                collection: 'routes',
+            },
+
         ]
     })
 )(withRouter(TimetablesContainer))

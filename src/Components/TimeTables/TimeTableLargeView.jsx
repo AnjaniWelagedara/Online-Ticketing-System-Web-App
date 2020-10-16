@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React from "react";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {firestoreConnect, isLoaded} from "react-redux-firebase";
@@ -8,11 +8,8 @@ import {Grid} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import TimeTableDaysView from "./TimeTableDaysView";
-import Tooltip from "@material-ui/core/Tooltip";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import TripsDialog from "../Shared/TripsDialog";
+import TimeTableLargeViewContainer from "./TimeTableLargeViewContainer";
+import {yellow} from "@material-ui/core/colors";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     paperTop: {
         position: 'relative',
         zIndex: 2,
-        backgroundColor: "#673ab7",
+        backgroundColor: yellow[600],
         color: "white",
         marginTop: theme.spacing(5),
         marginLeft: theme.spacing(3),
@@ -42,52 +39,34 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
 
     },
-    fab: {
-        position: 'fixed',
-        bottom: theme.spacing(3),
-        right: theme.spacing(3),
-    }
 }));
 
 function TimeTableLargeView(props) {
     const classes = useStyles();
-    const addTripDialogRef = useRef();
-    let {timetable} = props
-    timetable = {
-        ...timetable,
+
+    let {route} = props
+    route = {
+        ...route,
         id: props.match.params.id
     }
 
     return (
         <Grid container>
-            {(!isLoaded(timetable))
+            {(!isLoaded(route))
                 ? <Backdrop open={true}>
                     <CircularProgress style={{color: "#fff"}}/>
                 </Backdrop>
                 :
                 <main className={classes.layout}>
-                    <TripsDialog ref={addTripDialogRef}/>
                     <Paper elevation={5} className={classes.paperTop}>
-                        <Grid container  justify={"center"} alignItems={"center"} spacing={1}>
-                            <Typography  variant="h5" align={"left"} style={{marginLeft : "10px"}}>
-                                {timetable.routeNumber}  :  {timetable.station1} - {timetable.station2}
+                        <Grid container justify={"center"} alignItems={"center"} spacing={1}>
+                            <Typography variant="h5" align={"left"} style={{marginLeft: "10px"}}>
+                                {route.routeNumber} : {route.start} - {route.end}
                             </Typography>
                         </Grid>
                     </Paper>
                     <Paper elevation={5} className={classes.paper + " hoverable"}>
-                        <Tooltip title="Add Trip." arrow>
-                            <Fab
-                                size="small"
-                                className={classes.fab}
-                                color={"primary"}
-                                onClick={() => {
-                                    addTripDialogRef.current.handleClickOpenForCreate();
-                                }}
-                            >
-                                <AddIcon/>
-                            </Fab>
-                        </Tooltip>
-                        <TimeTableDaysView timetable={timetable}/>
+                        <TimeTableLargeViewContainer route={route} />
                     </Paper>
 
                 </main>
@@ -100,9 +79,9 @@ function TimeTableLargeView(props) {
 
 export default compose(
     firestoreConnect((props) => [
-        {collection: 'timetables', doc: props.match.params.id}
+        {collection: 'routes', doc: props.match.params.id},
     ]),
     connect(({firestore: {data}}, props) => ({
-        timetable: data.timetables && data.timetables[props.match.params.id]
+        route: data.routes && data.routes[props.match.params.id],
     }))
 )(TimeTableLargeView)

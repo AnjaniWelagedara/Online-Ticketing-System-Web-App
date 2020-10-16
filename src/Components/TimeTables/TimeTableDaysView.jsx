@@ -54,7 +54,7 @@ function TimeTableDaysView(props) {
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
     const classes = useStyles();
-    const timetable = props.timetable;
+    const route = props.route;
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
