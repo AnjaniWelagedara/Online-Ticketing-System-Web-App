@@ -28,11 +28,10 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import {connect} from "react-redux";
-import Button from "@material-ui/core/Button";
 import firebase from "../../Config/FirebaseConfig";
 import SidebarImage from "../../Images/sell-tickets-online-best-place.jpg"
 
-import PaymentIcon from '@material-ui/icons/Payment';
+import GroupIcon from '@material-ui/icons/Group';
 import DirectionsBusIcon from '@material-ui/icons/DirectionsBus';
 import SubtitlesIcon from '@material-ui/icons/Subtitles';
 import TimelineIcon from '@material-ui/icons/Timeline';
@@ -202,11 +201,11 @@ function NavigationBar(props) {
                     </ListItemIcon>
                     <ListItemText>Time Tables</ListItemText>
                 </ListItem>
-                <ListItem button component={Link} to="/dashboard">
+                <ListItem button component={Link} to="/dashboard/passengers">
                     <ListItemIcon>
-                        <PaymentIcon style={{color : "blue"}}/>
+                        <GroupIcon style={{color : "blue"}}/>
                     </ListItemIcon>
-                    <ListItemText>Tokens</ListItemText>
+                    <ListItemText>Passengers</ListItemText>
                 </ListItem>
             </List>
             <Divider />
