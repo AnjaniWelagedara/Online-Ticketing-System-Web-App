@@ -6,9 +6,14 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import {deepPurple} from '@material-ui/core/colors';
+import {yellow} from '@material-ui/core/colors';
 import Grid from "@material-ui/core/Grid";
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import Chip from "@material-ui/core/Chip";
+import TimelineIcon from "@material-ui/icons/Timeline";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import CardContent from "@material-ui/core/CardContent";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
         transform: 'rotate(180deg)',
     },
     avatar: {
-        backgroundColor: deepPurple[500],
+        backgroundColor: yellow[600],
         color: '#fff'
     },
 }));
@@ -51,7 +56,17 @@ export default function TimetableSmallView(props) {
                     title={route.routeNumber}
                     subheader={`${route.start} - ${route.end}`}
                 />
-                <CardActions disableSpacing>
+                <CardContent>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <Chip variant="outlined" size={"small"}
+                                  label={`Duration - ${route.hours} Hours ${route.minutes} Minutes`}
+                                  icon={<AccessTimeIcon/>}/>
+                        </Grid>
+                    </Grid>
+                    <hr/>
+                </CardContent>
+                <CardActions disableSpacing style={{marginTop : "-30px"}}>
                     <IconButton
                         component={Link} to={`/dashboard/timetable/${route.id}`}
                         style={{marginLeft : "auto"}}

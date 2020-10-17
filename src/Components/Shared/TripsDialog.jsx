@@ -18,6 +18,7 @@ import {
     KeyboardTimePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import TextField from "@material-ui/core/TextField";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -36,7 +37,7 @@ class TripsDialog extends Component {
             day: null,
             startStation: null,
             endStation: null,
-            arrival: null,
+            arrival: Date.now(),
             duration: null,
         }
     }
@@ -92,6 +93,7 @@ class TripsDialog extends Component {
 
     submit = () => {
         let details = {
+            id : Date.now(),
             busNumber: this.state.busNumber,
             day: this.state.day,
             startStation: this.state.startStation,
@@ -108,6 +110,7 @@ class TripsDialog extends Component {
                         type: "SHOW_SNACKBAR",
                         msg: 'Trip Added Successfully!'
                     })
+                    this.handleClose();
                 } else {
                     this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Create Trip Again`)
                 }
@@ -251,19 +254,19 @@ class TripsDialog extends Component {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12} sm={12} md={4} style={{marginTop : "-16px"}}>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardTimePicker
-                                        margin="normal"
-                                        id="time-picker"
-                                        label="Arrival Time"
-                                        value={this.state.arrival}
-                                        onChange={(date) => this.updateStartDate(date)}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change time',
-                                        }}
-                                    />
-                                </MuiPickersUtilsProvider>
+                            <Grid item xs={12} sm={12} md={4}>
+                                <TextField
+                                    type={"time"}
+                                    id="arrival"
+                                    name="arrival"
+                                    label="Bus Number"
+                                    fullWidth
+                                    defaultValue={this.state.arrival}
+                                    value={this.state.arrival}
+                                    onChange={(e) => {
+                                        this.handleInput(e)
+                                    }}
+                                />
                             </Grid>
                         </Grid>
                     </DialogContent>

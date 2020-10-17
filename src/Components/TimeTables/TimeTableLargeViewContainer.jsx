@@ -9,6 +9,8 @@ import AddIcon from "@material-ui/icons/Add";
 import TimeTableDaysView from "./TimeTableDaysView";
 import TripsDialog from "../Shared/TripsDialog";
 import {makeStyles} from "@material-ui/core/styles";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
     fab: {
@@ -25,20 +27,27 @@ function DashboardItem(props) {
     let route = props.route;
     return (
         <React.Fragment>
-            <TripsDialog ref={addTripDialogRef} route={route} buses={buses}/>
-            <Tooltip title="Add Trip." arrow>
-                <Fab
-                    size="small"
-                    className={classes.fab}
-                    color={"primary"}
-                    onClick={() => {
-                        addTripDialogRef.current.handleClickOpenForCreate(route, buses);
-                    }}
-                >
-                    <AddIcon/>
-                </Fab>
-            </Tooltip>
-            <TimeTableDaysView route={route}/>
+            {(!isLoaded(buses))
+                ? <Backdrop open={true}>
+                    <CircularProgress style={{color: "#fff"}}/>
+                </Backdrop>
+                : <React.Fragment>
+                    <TripsDialog ref={addTripDialogRef} route={route} buses={buses}/>
+                    <Tooltip title="Add Trip." arrow>
+                        <Fab
+                            size="small"
+                            className={classes.fab}
+                            color={"primary"}
+                            onClick={() => {
+                                addTripDialogRef.current.handleClickOpenForCreate(route, buses);
+                            }}
+                        >
+                            <AddIcon/>
+                        </Fab>
+                    </Tooltip>
+                    <TimeTableDaysView route={route}/>
+                </React.Fragment>
+            }
         </React.Fragment>
     )
 
