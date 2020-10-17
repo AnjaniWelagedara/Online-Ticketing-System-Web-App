@@ -6,9 +6,10 @@ import {blue, yellow} from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TimelineIcon from '@material-ui/icons/Timeline';
+import getLabels from "../../Functions/GetLabels/getLabels";
+import GetPassengerCountByYear from "./getPassengerCountByYear";
 
 const useStyles = makeStyles((theme) => ({
-
     paperTop: {
         position: 'relative',
         width: "70px",
@@ -27,39 +28,14 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(6),
         paddingBottom: theme.spacing(6),
     },
-
 }));
 
 export default function PassengerTypeStatics(props) {
     const classes = useStyles();
     const passengers = props.passengers;
 
-    const getLabels = () => {
-        let flags = [], output = [], l = passengers.length, i;
-        for( i=0; i<l; i++) {
-            if( flags[passengers[i].registeredDate]) continue;
-            flags[passengers[i].registeredDate] = true;
-            output.push(passengers[i].registeredDate);
-        }
-        return output;
-    }
-
-    const getPassengerCountByYear = () => {
-        let passengerCount = [];
-        getLabels().map(year => {
-            let count = 0;
-            passengers.map(p => {
-                if(p.registeredDate === year){
-                    ++count;
-                }
-            })
-            passengerCount.push(count);
-        })
-        return passengerCount;
-    }
-
     const data = {
-        labels: getLabels(),
+        labels: getLabels(passengers),
         datasets: [
             {
                 label: 'Registrations by Year',
@@ -80,7 +56,7 @@ export default function PassengerTypeStatics(props) {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: getPassengerCountByYear()
+                data: GetPassengerCountByYear(passengers)
             }
         ]
     };
