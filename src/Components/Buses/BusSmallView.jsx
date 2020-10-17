@@ -1,26 +1,24 @@
-import React, {useRef} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import {deepPurple} from '@material-ui/core/colors';
-import CreateIcon from '@material-ui/icons/Create';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Grid from "@material-ui/core/Grid";
-import {deleteRoute} from "../../Store/Actions/RouteActions";
-import {connect} from "react-redux";
-import ConfirmDialog from "../Shared/ConfirmDialog";
-import RouteDialog from "../Shared/RouteDialog";
-import Chip from '@material-ui/core/Chip';
-import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
-import TimelineIcon from '@material-ui/icons/Timeline';
-import AirlineSeatReclineNormalIcon from '@material-ui/icons/AirlineSeatReclineNormal';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
-import {deleteBus} from "../../Store/Actions/BusActions";
+import AirlineSeatReclineNormalIcon from '@material-ui/icons/AirlineSeatReclineNormal';
+import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
 import BusesDialog from "../Shared/BusesDialog";
+import CardActions from '@material-ui/core/CardActions';
+import Card from '@material-ui/core/Card';
+import Chip from '@material-ui/core/Chip';
+import ConfirmDialog from "../Shared/ConfirmDialog";
+import {connect} from "react-redux";
+import CardContent from '@material-ui/core/CardContent';
+import CreateIcon from '@material-ui/icons/Create';
+import {deleteBus} from "../../Store/Actions/BusActions";
+import {deepPurple} from '@material-ui/core/colors';
+import DeleteIcon from '@material-ui/icons/Delete';
+import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
+import Grid from "@material-ui/core/Grid";
+import IconButton from '@material-ui/core/IconButton';
+import {makeStyles} from '@material-ui/core/styles';
+import React, {useRef} from 'react';
+import TimelineIcon from '@material-ui/icons/Timeline';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
         color: '#fff'
     },
 }));
-
+/*Showing small cards with bus details*/
 function BusSmallView(props) {
     const classes = useStyles();
     const confirmDialogRef = useRef();
@@ -54,7 +52,7 @@ function BusSmallView(props) {
     const bus = props.bus;
     const routes = props.routes;
 
-
+/*Function to delete a bus*/
     const deleteBus = () => {
         props.deleteBus(bus.id, res => {
             if (res.status) {
@@ -138,7 +136,7 @@ function BusSmallView(props) {
     );
 }
 
-
+/*Connection for the firebase*/
 
 const mapDispatchToProps = (dispatch) => {
     return {
