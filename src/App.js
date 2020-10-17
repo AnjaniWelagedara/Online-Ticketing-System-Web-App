@@ -6,11 +6,12 @@ import BusesContainer from "./Components/Buses/BusesContainer";
 import RoutesContainer from "./Components/Routes/RoutesContainer";
 import TimetablesContainer from "./Components/TimeTables/TimetablesContainer";
 import TimeTableLargeView from "./Components/TimeTables/TimeTableLargeView";
+import PassengersContainer from "./Components/Passengers/PassengersContainer";
 import EmployeePrivateRoute from "./Components/EmployeePrivateRoute";
 import NavigationBar from "./Components/Shared/NavigationBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {createMuiTheme, MuiThemeProvider, responsiveFontSizes} from "@material-ui/core/styles";
-import {deepPurple, orange, yellow} from "@material-ui/core/colors";
+import {yellow} from "@material-ui/core/colors";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import SnackBar from "./Components/Shared/SnackBar";
@@ -56,7 +57,6 @@ function App({location, snackBar, backdrop}) {
             </Backdrop>
 
             <Switch>
-
                 <EmployeePrivateRoute exact path="/dashboard/buses">
                     <BusesContainer/>
                 </EmployeePrivateRoute>
@@ -65,6 +65,9 @@ function App({location, snackBar, backdrop}) {
                 </EmployeePrivateRoute>
                 <EmployeePrivateRoute exact path="/dashboard/timetables">
                     <TimetablesContainer/>
+                </EmployeePrivateRoute>
+                <EmployeePrivateRoute exact path="/dashboard/passengers">
+                    <PassengersContainer/>
                 </EmployeePrivateRoute>
                 <Route exact path={"/dashboard/timetable/:id"} component={TimeTableLargeView}/>
                 <EmployeePrivateRoute exact path="/dashboard">

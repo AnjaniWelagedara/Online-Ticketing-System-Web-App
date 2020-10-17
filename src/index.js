@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import {Provider, useSelector} from 'react-redux'
 import {createFirestoreInstance} from 'redux-firestore';
 import {ReactReduxFirebaseProvider, isLoaded} from 'react-redux-firebase';
-import {store} from './Store/Store'
+import store from './Store/Store'
 import firebase from "./Config/FirebaseConfig";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
