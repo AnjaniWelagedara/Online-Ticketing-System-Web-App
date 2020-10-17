@@ -13,6 +13,7 @@ import {withRouter} from "react-router-dom";
 import AllPassengerTable from "./AllPassengerTable";
 import PassengerTypeStatics from "./PassengerTypeStatics";
 import PassengerSpread from "./PassengerSpread";
+import getPassengerCount from "../../Functions/GetPassengerCount/getPassengerCount"
 
 const useStyles = makeStyles((theme) => ({
     fab: {
@@ -28,20 +29,6 @@ Large view which contains buses
 function PassengersContainer(props) {
     const classes = useStyles();
     let {passengers} = props;
-
-    const getPassengerCount = () => {
-        let localCount = 0;
-        let ForeignCount = 0;
-        passengers.map(p => {
-            if (p.passengerType === "Local") {
-                ++localCount;
-            } else {
-                ++ForeignCount;
-            }
-        })
-        let passengerCount = [localCount, ForeignCount];
-        return passengerCount;
-    }
 
     return (
         <React.Fragment>
@@ -62,7 +49,7 @@ function PassengersContainer(props) {
                             <AllPassengerTable passengers={passengers}/>
                         </Grid>
                         <Grid xs={5} item style={{marginTop: "20px"}}>
-                            <PassengerTypeStatics passengerCount={getPassengerCount()}/>
+                            <PassengerTypeStatics passengerCount={getPassengerCount(passengers)}/>
                         </Grid>
                         <Grid xs={7} item style={{marginTop: "20px"}}>
                             <PassengerSpread passengers={passengers}/>
@@ -77,6 +64,7 @@ function PassengersContainer(props) {
 
 /*Connect firebase*/
 const mapStateToProps = (state) => {
+    console.log(state)
     return {
         passengers: state.firestore.ordered.Passengers,
     }
