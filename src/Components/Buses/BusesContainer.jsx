@@ -1,20 +1,20 @@
-import React, {useRef} from "react";
-import {makeStyles} from '@material-ui/core/styles';
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import Tooltip from '@material-ui/core/Tooltip';
-import {withRouter} from "react-router-dom";
+import Backdrop from "@material-ui/core/Backdrop";
 import BusesDialog from "../Shared/BusesDialog";
+import BusSmallView from "./BusSmallView";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import {compose} from "redux";
 import {connect} from "react-redux";
+import Container from "@material-ui/core/Container";
+import Fab from '@material-ui/core/Fab';
 import {firestoreConnect, isLoaded} from "react-redux-firebase";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import BusSmallView from "./BusSmallView";
-import {deleteRoute} from "../../Store/Actions/RouteActions";
+import Grid from "@material-ui/core/Grid";
+import {makeStyles} from '@material-ui/core/styles';
+import React, {useRef} from "react";
+import Typography from "@material-ui/core/Typography";
+import Tooltip from '@material-ui/core/Tooltip';
+import {withRouter} from "react-router-dom";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+/*
+Large view which contains buses
+*/
 function BusesContainer(props) {
     const classes = useStyles();
     let { routes, buses} = props;
@@ -76,7 +79,7 @@ function BusesContainer(props) {
 
     )
 }
-
+/*Connect firebase*/
 const mapStateToProps = (state) => {
     return {
         buses: state.firestore.ordered.buses,
