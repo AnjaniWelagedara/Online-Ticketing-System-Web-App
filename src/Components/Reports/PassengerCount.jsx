@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
-import {makeStyles} from "@material-ui/core/styles";
-import {Doughnut, Line} from 'react-chartjs-2';
-import Paper from "@material-ui/core/Paper";
 import {blue, red, yellow} from "@material-ui/core/colors";
-import Grid from "@material-ui/core/Grid";
-import SearchIcon from '@material-ui/icons/Search';
-import TimelineIcon from '@material-ui/icons/Timeline';
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import {Doughnut, Line} from 'react-chartjs-2';
+import FormControl from "@material-ui/core/FormControl";
+import Grid from "@material-ui/core/Grid";
+import InputLabel from "@material-ui/core/InputLabel";
+import {makeStyles} from "@material-ui/core/styles";
+import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
+import SearchIcon from '@material-ui/icons/Search';
+import Select from "@material-ui/core/Select";
+import TimelineIcon from '@material-ui/icons/Timeline';
+import Typography from "@material-ui/core/Typography";
+
 
 const useStyles = makeStyles((theme) => ({
     paperTop: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(6),
     },
 }));
-
+/*pie chart for the passenger count with particular route*/
 export default function PassengerCount(props) {
     const classes = useStyles();
     const routes = props.routes;

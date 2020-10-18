@@ -1,14 +1,14 @@
 import React, {Component} from "react";
-import Grid from "@material-ui/core/Grid";
-import PassengerCount from "./PassengerCount";
-import NetworkTraffic from "./NetworkTraffic";
-import {compose} from "redux";
-import {connect} from "react-redux";
-import {firestoreConnect, isLoaded} from "react-redux-firebase";
-import {withRouter} from "react-router-dom";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {compose} from "redux";
+import {connect} from "react-redux";
 import Container from "@material-ui/core/Container";
+import {firestoreConnect, isLoaded} from "react-redux-firebase";
+import Grid from "@material-ui/core/Grid";
+import NetworkTraffic from "./NetworkTraffic";
+import PassengerCount from "./PassengerCount";
+import {withRouter} from "react-router-dom";
 
 function ReportsContainer(props) {
     let {routes, triplogs, buses} = props;
@@ -37,6 +37,8 @@ function ReportsContainer(props) {
         </div>
     );
 }
+
+/*connection for the firebase*/
 
 const mapStateToProps = (state) => {
     console.log(state)

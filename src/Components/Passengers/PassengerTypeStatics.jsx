@@ -1,11 +1,11 @@
 import React from "react";
+import { Doughnut } from "react-chartjs-2";
+import Grid from "@material-ui/core/Grid";
+import {green, red, orange, blue, blueGrey, yellow} from "@material-ui/core/colors";
 import {makeStyles} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import {green, red, orange, blue, blueGrey, yellow} from "@material-ui/core/colors";
-import Typography from '@material-ui/core/Typography';
-import Grid from "@material-ui/core/Grid";
-import { Doughnut } from "react-chartjs-2";
 import PieChartIcon from '@material-ui/icons/PieChart';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-
+/*pie chart for the passenger count*/
 
 export default function PassengerTypeStatics (props) {
     const classes = useStyles();

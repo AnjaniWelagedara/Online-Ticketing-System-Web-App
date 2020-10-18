@@ -1,20 +1,19 @@
 import React, {useState} from 'react';
-import {makeStyles} from "@material-ui/core/styles";
-import {Line} from 'react-chartjs-2';
-import Paper from "@material-ui/core/Paper";
 import {blue, yellow} from "@material-ui/core/colors";
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
-import IconButton from '@material-ui/core/IconButton';
+import InputLabel from "@material-ui/core/InputLabel";
+import {Line} from 'react-chartjs-2';
+import {makeStyles} from "@material-ui/core/styles";
+import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
+import Select from "@material-ui/core/Select";
 import SearchIcon from '@material-ui/icons/Search';
 import TimelineIcon from '@material-ui/icons/Timeline';
-import getLabels from "../../Functions/GetLabels/getLabels";
-import GetPassengerCountByYear from "../Passengers/getPassengerCountByYear";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+
+
 
 const useStyles = makeStyles((theme) => ({
     paperTop: {
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
+/*Graph to show the network traffic*/
 export default function NetworkTraffic(props) {
     const classes = useStyles();
     const routes = props.routes;
