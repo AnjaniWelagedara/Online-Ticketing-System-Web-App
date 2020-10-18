@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Doughnut, Line} from 'react-chartjs-2';
 import Paper from "@material-ui/core/Paper";
@@ -12,6 +12,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import AlertDialog from "../Shared/AlertDialog";
 
 const useStyles = makeStyles((theme) => ({
     paperTop: {
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PassengerCount(props) {
     const classes = useStyles();
+    const alertDialog = useRef();
     const routes = props.routes;
     const triplogs = props.triplogs;
     const buses = props.buses;
@@ -52,9 +54,9 @@ export default function PassengerCount(props) {
             ]
         }]
     });
-    const [route, setRoute] = useState(null);
-    const [day, setDay] = useState(null);
-    const [arrival, setArrival] = useState(null);
+    const [route, setRoute] = useState("");
+    const [day, setDay] = useState("");
+    const [arrival, setArrival] = useState("");
 
 
     function compare(a, b) {
@@ -97,57 +99,71 @@ export default function PassengerCount(props) {
     }
 
     const setPassengerCount = () => {
-        let selectedRoute, selectedTrip, sheetCount;
 
-        routes.map(r => {
-            if (r.routeNumber === route) {
-                selectedRoute = r;
-            }
-        });
+        if (route === ""){
+            alertDialog.current.handleClickOpen("Error Occurred!", `Please Select Route Number!`)
 
-        selectedRoute.trips.map(trip => {
-            if (trip.day === day && trip.arrival == arrival) {
-                selectedTrip = trip
-            }
-        });
+        }else if(day === ""){
+            alertDialog.current.handleClickOpen("Error Occurred!", `Please Select Day!`)
 
-        let passengerCount = 0;
-        triplogs.map(tri => {
-            console.log("t", tri)
-            if (selectedTrip.id == tri.tripId) {
-                ++passengerCount;
-            }
-        });
+        }else if(arrival === ""){
+            alertDialog.current.handleClickOpen("Error Occurred!", `Please Select Arrival Time!`)
 
-        buses.map(bus => {
-            if(bus.busNumber === selectedTrip.busNumber){
-                sheetCount = bus.sheets;
-            }
-        })
+        }else{
+            let selectedRoute, selectedTrip, sheetCount;
 
-        setData({
-                labels: [
-                    `Sheets Count ${selectedTrip.busNumber}`,
-                    'Passengers Count',
-                ],
-                datasets: [{
-                    data:[sheetCount, passengerCount],
-                    backgroundColor: [
-                        yellow[400],
-                        red[400]
+            routes.map(r => {
+                if (r.routeNumber === route) {
+                    selectedRoute = r;
+                }
+            });
+
+            selectedRoute.trips.map(trip => {
+                if (trip.day === day && trip.arrival == arrival) {
+                    selectedTrip = trip
+                }
+            });
+
+            let passengerCount = 0;
+            triplogs.map(tri => {
+                console.log("t", tri)
+                if (selectedTrip.id == tri.tripId) {
+                    ++passengerCount;
+                }
+            });
+
+            buses.map(bus => {
+                if(bus.busNumber === selectedTrip.busNumber){
+                    sheetCount = bus.sheets;
+                }
+            })
+
+            setData({
+                    labels: [
+                        `Sheets Count ${selectedTrip.busNumber}`,
+                        'Passengers Count',
                     ],
-                    hoverBackgroundColor: [
-                        yellow[500],
-                        red[500]
-                    ]
-                }]
-            }
-        )
+                    datasets: [{
+                        data:[sheetCount, passengerCount],
+                        backgroundColor: [
+                            yellow[400],
+                            red[400]
+                        ],
+                        hoverBackgroundColor: [
+                            yellow[500],
+                            red[500]
+                        ]
+                    }]
+                }
+            )
+        }
+
     }
 
     return (
         <div>
             <Paper style={{backgroundColor: blue[500]}} elevation={5} className={classes.paperTop + " hoverable"}>
+                <AlertDialog ref={alertDialog}/>
                 <Grid container justify={"center"} alignItems={"center"}>
                     <TimelineIcon fontSize={"large"}/>
                 </Grid>

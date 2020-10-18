@@ -15,6 +15,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {addRoute, editRoute} from "../../Store/Actions/RouteActions";
 import AlertDialog from "./AlertDialog";
+import routeValidations from "../../Functions/Validations/RouteValidation/routeValidations"
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -27,14 +28,14 @@ class RouteDialog extends Component {
         this.state = {
             open: false,
             purpose: "Create",
-            routeNumber: null,
-            distance: null,
-            start: null,
-            end: null,
-            hours: null,
-            minutes: null,
-            time: null,
-            fare: null,
+            routeNumber: "",
+            distance: "",
+            start: "",
+            end: "",
+            hours: "",
+            minutes: "",
+            time: "",
+            fare: "",
             data: []
         }
     }
@@ -80,15 +81,15 @@ class RouteDialog extends Component {
         this.setState({
             open: false,
             purpose: "Create",
-            distance: null,
-            routeNumber: null,
-            start: null,
-            end: null,
-            hours: null,
-            minutes: null,
-            time: null,
-            fare: null,
-            stations: []
+            routeNumber: "",
+            distance: "",
+            start: "",
+            end: "",
+            hours: "",
+            minutes: "",
+            time: "",
+            fare: "",
+            data: []
         })
     };
 
@@ -105,6 +106,7 @@ class RouteDialog extends Component {
     };
 
     submit = () => {
+
         let details = {
             routeNumber: this.state.routeNumber,
             start: this.state.start,
@@ -115,53 +117,57 @@ class RouteDialog extends Component {
             fare: this.state.fare,
             stations: this.state.data,
         }
-
-        if (this.state.purpose === "Create") {
-            this.props.addRoute(details, res => {
-                if (res.status) {
-                    this.props.handleSnackBar({
-                        type: "SHOW_SNACKBAR",
-                        msg: 'Route Added Successfully!'
-                    })
-                    this.setState({
-                        open: false,
-                        purpose: "Create",
-                        routeNumber: null,
-                        start: null,
-                        end: null,
-                        hours: null,
-                        minutes: null,
-                        time: null,
-                        fare: null,
-                        stations: []
-                    })
-                } else {
-                    this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Create Route Again`)
-                }
-            })
+        const result = routeValidations(details);
+        if (result.status) {
+            if (this.state.purpose === "Create") {
+                this.props.addRoute(details, res => {
+                    if (res.status) {
+                        this.props.handleSnackBar({
+                            type: "SHOW_SNACKBAR",
+                            msg: 'Route Added Successfully!'
+                        })
+                        this.setState({
+                            open: false,
+                            purpose: "Create",
+                            routeNumber: null,
+                            start: null,
+                            end: null,
+                            hours: null,
+                            minutes: null,
+                            time: null,
+                            fare: null,
+                            stations: []
+                        })
+                    } else {
+                        this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Create Route Again`)
+                    }
+                })
+            } else {
+                this.props.editRoute(this.state.id, details, res => {
+                    if (res.status) {
+                        this.props.handleSnackBar({
+                            type: "SHOW_SNACKBAR",
+                            msg: 'Route Edited Successfully!'
+                        })
+                        this.setState({
+                            open: false,
+                            purpose: "Create",
+                            routeNumber: null,
+                            start: null,
+                            end: null,
+                            hours: null,
+                            minutes: null,
+                            time: null,
+                            fare: null,
+                            stations: []
+                        })
+                    } else {
+                        this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Create Route Again`)
+                    }
+                })
+            }
         } else {
-            this.props.editRoute(this.state.id, details, res => {
-                if (res.status) {
-                    this.props.handleSnackBar({
-                        type: "SHOW_SNACKBAR",
-                        msg: 'Route Edited Successfully!'
-                    })
-                    this.setState({
-                        open: false,
-                        purpose: "Create",
-                        routeNumber: null,
-                        start: null,
-                        end: null,
-                        hours: null,
-                        minutes: null,
-                        time: null,
-                        fare: null,
-                        stations: []
-                    })
-                } else {
-                    this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Create Route Again`)
-                }
-            })
+            this.alertDialog.current.handleClickOpen("Form Validation Error!", result.error);
         }
     }
 

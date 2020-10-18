@@ -13,7 +13,24 @@ const firebaseConfig = {
     appId: "1:448243941382:web:608a55fd7fa7887f6c8387"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+let singletonInstance = null;
 
-export default firebase;
+class Singleton {
+    constructor() {
+        if (!singletonInstance) {
+            singletonInstance = this;
+
+            firebase.initializeApp(firebaseConfig);
+            singletonInstance = firebase;
+
+            //alert("New Instance created");
+        }
+
+        //alert("Instance Get From Created Instance");
+        return singletonInstance;
+    }
+}
+
+const singletonObject = new Singleton();
+
+export default singletonObject;

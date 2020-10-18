@@ -131,3 +131,101 @@ export const addTrip = (id, details, callback) => {
 
     }
 };
+
+export const editTrip = (id, details, callback) => {
+    return (dispatch, getState, {getFirestore}) => {
+
+        dispatch({type: 'SHOW_BACKDROP'});
+        const firestore = getFirestore();
+
+        firestore.collection("routes").doc(id).get()
+            .then(res => {
+                let route = res.data();
+                route.trips.map(trip => {
+                    if(trip.id === details.id){
+                        trip.busNumber = details.busNumber
+                        trip.day = details.day
+                        trip.startStation = details.startStation
+                        trip.endStation = details.endStation
+                        trip.arrival = details.arrival
+                        trip.id = details.id
+                    }
+                });
+
+                firestore.collection('routes').doc(id).set(route, {merge: true})
+                    .then((res) => {
+                        dispatch({type: 'HIDE_BACKDROP'});
+                        callback(
+                            {
+                                status: true
+                            }
+                        )
+                    }).catch((err) => {
+                    console.log(err)
+                    dispatch({type: 'HIDE_BACKDROP'});
+                    callback(
+                        {
+                            status: false,
+                            error: err
+                        }
+                    )
+                })
+            }).catch(error => {
+            console.log(error)
+            dispatch({type: 'HIDE_BACKDROP'});
+            callback(
+                {
+                    status: false,
+                    error: error
+                }
+            )
+        })
+
+    }
+};
+
+export const deleteTrip = (id, tripId, callback) => {
+    return (dispatch, getState, {getFirestore}) => {
+
+
+        dispatch({type: 'SHOW_BACKDROP'});
+        const firestore = getFirestore();
+
+        firestore.collection("routes").doc(id).get()
+            .then(res => {
+                let route = res.data();
+                route.trips = route.trips.filter(trip => {
+                    return trip.id !== tripId
+                })
+
+                firestore.collection('routes').doc(id).set(route, {merge: true})
+                    .then((res) => {
+                        dispatch({type: 'HIDE_BACKDROP'});
+                        callback(
+                            {
+                                status: true
+                            }
+                        )
+                    }).catch((err) => {
+                    console.log(err)
+                    dispatch({type: 'HIDE_BACKDROP'});
+                    callback(
+                        {
+                            status: false,
+                            error: err
+                        }
+                    )
+                })
+            }).catch(error => {
+            console.log(error)
+            dispatch({type: 'HIDE_BACKDROP'});
+            callback(
+                {
+                    status: false,
+                    error: error
+                }
+            )
+        })
+
+    }
+};

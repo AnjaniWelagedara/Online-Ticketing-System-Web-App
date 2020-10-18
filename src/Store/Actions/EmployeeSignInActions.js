@@ -1,5 +1,6 @@
 export const employeeSignIn = (credentials) => {
     return (dispatch, getState, {getFirebase}) => {
+        dispatch({type: 'SHOW_BACKDROP'});
         const firebase = getFirebase();
 
         firebase.auth().signInWithEmailAndPassword(
@@ -7,10 +8,11 @@ export const employeeSignIn = (credentials) => {
             credentials.empPassword
         ).then(() => {
             console.log("SignIn success")
-            dispatch({ type: 'SIGN_IN_SUCCESS' });
+            dispatch({type: 'HIDE_BACKDROP'});
         }).catch((err) => {
+            alert(err)
             console.log("SignIn Error")
-            dispatch({ type: 'SIGN_OUT_SUCCESS', err });
+            dispatch({type: 'HIDE_BACKDROP'});
         });
 
     }

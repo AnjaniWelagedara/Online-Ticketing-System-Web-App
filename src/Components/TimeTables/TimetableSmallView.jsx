@@ -10,8 +10,6 @@ import {yellow} from '@material-ui/core/colors';
 import Grid from "@material-ui/core/Grid";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Chip from "@material-ui/core/Chip";
-import TimelineIcon from "@material-ui/icons/Timeline";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import CardContent from "@material-ui/core/CardContent";
 
