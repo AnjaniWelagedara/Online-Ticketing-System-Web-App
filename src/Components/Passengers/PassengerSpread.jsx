@@ -1,13 +1,13 @@
 import React from 'react';
-import {makeStyles} from "@material-ui/core/styles";
-import {Line} from 'react-chartjs-2';
-import Paper from "@material-ui/core/Paper";
 import {blue, yellow} from "@material-ui/core/colors";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TimelineIcon from '@material-ui/icons/Timeline';
+import Paper from "@material-ui/core/Paper";
 import getLabels from "../../Functions/GetLabels/getLabels";
 import GetPassengerCountByYear from "./getPassengerCountByYear";
+import Grid from "@material-ui/core/Grid";
+import {Line} from 'react-chartjs-2';
+import {makeStyles} from "@material-ui/core/styles";
+import TimelineIcon from '@material-ui/icons/Timeline';
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
     paperTop: {
@@ -29,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(6),
     },
 }));
+
+/*graph for the passenger count*/
 
 export default function PassengerTypeStatics(props) {
     const classes = useStyles();
