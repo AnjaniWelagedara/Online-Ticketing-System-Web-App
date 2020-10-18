@@ -1,19 +1,18 @@
-import React, {useState} from 'react';
+import React, {createRef, useRef, useState} from 'react';
+import {makeStyles} from "@material-ui/core/styles";
 import {blue, yellow} from "@material-ui/core/colors";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import {Line} from 'react-chartjs-2';
-import {makeStyles} from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
 import SearchIcon from '@material-ui/icons/Search';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import Typography from "@material-ui/core/Typography";
-
-
+import AlertDialog from "../Shared/AlertDialog";
 
 const useStyles = makeStyles((theme) => ({
     paperTop: {
@@ -40,12 +39,13 @@ const useStyles = makeStyles((theme) => ({
 /*Graph to show the network traffic*/
 export default function NetworkTraffic(props) {
     const classes = useStyles();
+    const alertDialog = useRef();
     const routes = props.routes;
     const triplogs = props.triplogs;
 
     const [data, setData] = useState({});
-    const [route, setRoute] = useState({});
-    const [day, setDay] = useState({});
+    const [route, setRoute] = useState("");
+    const [day, setDay] = useState("");
 
 
     function compare( a, b ) {
@@ -59,71 +59,82 @@ export default function NetworkTraffic(props) {
     }
 
     const setNetworkTraffic = () => {
-        let selectedRoute;
-        let selectedTrips = [];
-        let labels = [];
-        let passengerCount = [];
+        if (route === ""){
+            alertDialog.current.handleClickOpen("Error Occurred!", `Please Select Route Number!`)
 
-        routes.map(r => {
-            if (r.routeNumber === route){
-                selectedRoute = r;
-            }
-        })
+        }else if(day === ""){
+            alertDialog.current.handleClickOpen("Error Occurred!", `Please Select Day!`)
 
-        selectedRoute.trips.map(trip => {
-            if(trip.day === day){
-                selectedTrips.push(trip)
-            }
-        })
+        }else{
+            let selectedRoute;
+            let selectedTrips = [];
+            let labels = [];
+            let passengerCount = [];
 
-        selectedTrips.sort( compare );
-
-        selectedTrips.map(trip => {
-            labels.push(trip.arrival);
-            let count = 0;
-            triplogs.map(tri => {
-                console.log("t",tri)
-                if(trip.id == tri.tripId){
-                    ++count;
+            routes.map(r => {
+                if (r.routeNumber === route){
+                    selectedRoute = r;
                 }
             })
-            passengerCount.push(count)
-        })
 
+            selectedRoute.trips.map(trip => {
+                if(trip.day === day){
+                    selectedTrips.push(trip)
+                }
+            })
 
-        setData({
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Route Traffic with Passenger Count',
-                        fill: false,
-                        lineTension: 0.1,
-                        backgroundColor: 'rgba(75,192,192,0.4)',
-                        borderColor: yellow[500],
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: 'rgba(75,192,192,1)',
-                        pointBackgroundColor: '#fff',
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                        pointHoverBorderColor: 'rgba(220,220,220,1)',
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 1,
-                        pointHitRadius: 10,
-                        data: passengerCount
+            selectedTrips.sort( compare );
+
+            selectedTrips.map(trip => {
+                labels.push(trip.arrival);
+                let count = 0;
+                triplogs.map(tri => {
+                    console.log("t",tri)
+                    if(trip.id == tri.tripId){
+                        ++count;
                     }
-                ]
-            }
-        )
+                })
+                passengerCount.push(count)
+            })
+
+
+            setData({
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Route Traffic with Passenger Count',
+                            fill: false,
+                            lineTension: 0.1,
+                            backgroundColor: 'rgba(75,192,192,0.4)',
+                            borderColor: yellow[500],
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            borderJoinStyle: 'miter',
+                            pointBorderColor: 'rgba(75,192,192,1)',
+                            pointBackgroundColor: '#fff',
+                            pointBorderWidth: 1,
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                            pointHoverBorderColor: 'rgba(220,220,220,1)',
+                            pointHoverBorderWidth: 2,
+                            pointRadius: 1,
+                            pointHitRadius: 10,
+                            data: passengerCount
+                        }
+                    ]
+                }
+            )
+        }
+
+
     }
 
 
     return (
         <div>
             <Paper style={{backgroundColor: blue[500]}} elevation={5} className={classes.paperTop + " hoverable"}>
+                <AlertDialog ref={alertDialog}/>
                 <Grid container justify={"center"} alignItems={"center"}>
                     <TimelineIcon fontSize={"large"}/>
                 </Grid>

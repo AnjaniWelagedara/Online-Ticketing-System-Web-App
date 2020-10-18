@@ -45,7 +45,7 @@ function DashboardItem(props) {
                             <AddIcon/>
                         </Fab>
                     </Tooltip>
-                    <TimeTableDaysView route={route}/>
+                    <TimeTableDaysView route={route} buses={buses}/>
                 </React.Fragment>
             }
         </React.Fragment>

@@ -14,7 +14,7 @@ import React, {Component, createRef} from "react";
 import Select from "@material-ui/core/Select";
 import Slide from "@material-ui/core/Slide";
 import TextField from "@material-ui/core/TextField";
-
+import BusValidations from "../../Functions/Validations/BusValidations/BusValidations";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -22,26 +22,26 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 class BusesDialog extends Component {
-/*Attributes in a bus*/
+    /*Attributes in a bus*/
     constructor(props) {
         super(props);
         this.state = {
             open: false,
             purpose: "Create",
-            id : null,
+            id: null,
             routes: this.props.routes,
-            busNumber: null,
-            type: null,
-            sheets: null,
-            routeNumber: null,
-            driver: null,
-            passcode: null,
+            busNumber: "",
+            type: "",
+            sheets: "",
+            routeNumber: "",
+            driver: "",
+            passcode: "",
         }
     }
 
     alertDialog = createRef();
 
-/*Function for create model*/
+    /*Function for create model*/
     handleClickOpenForCreate = (routes) => {
         this.setState({
             purpose: "Create",
@@ -54,7 +54,7 @@ class BusesDialog extends Component {
         this.setState({
             open: true,
             purpose: "Edit",
-            id : bus.id,
+            id: bus.id,
             routes: routes,
             busNumber: bus.busNumber,
             type: bus.type,
@@ -69,14 +69,14 @@ class BusesDialog extends Component {
         this.setState({
             open: false,
             purpose: "Create",
-            id : null,
+            id: null,
             routes: this.props.routes,
-            busNumber: null,
-            type: null,
-            sheets: null,
-            routeNumber: null,
-            driver: null,
-            passcode: null,
+            busNumber: "",
+            type: "",
+            sheets: "",
+            routeNumber: "",
+            driver: "",
+            passcode: "",
         })
     };
     /*Function for input attributes*/
@@ -96,30 +96,37 @@ class BusesDialog extends Component {
             passcode: this.state.passcode
         }
 
-        if(this.state.purpose === "Create"){
-            this.props.addBus(details, res => {
-                if (res.status) {
-                    this.props.handleSnackBar({
-                        type: "SHOW_SNACKBAR",
-                        msg: 'Bus Added Successfully!'
-                    })
-                    this.handleClose()
-                } else {
-                    this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Create Bus Again`)
-                }
-            })
-        }else {
-            this.props.editBus(this.state.id, details, res => {
-                if (res.status) {
-                    this.props.handleSnackBar({
-                        type: "SHOW_SNACKBAR",
-                        msg: 'Bus Edited Successfully!'
-                    })
-                    this.handleClose()
-                } else {
-                    this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Update Bus Again`)
-                }
-            })
+        const result = BusValidations(details);
+
+        if (result.status) {
+            if (this.state.purpose === "Create") {
+                this.props.addBus(details, res => {
+                    if (res.status) {
+                        this.props.handleSnackBar({
+                            type: "SHOW_SNACKBAR",
+                            msg: 'Bus Added Successfully!'
+                        })
+                        this.handleClose()
+                    } else {
+                        this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Create Bus Again`)
+                    }
+                })
+            } else {
+                this.props.editBus(this.state.id, details, res => {
+                    if (res.status) {
+                        this.props.handleSnackBar({
+                            type: "SHOW_SNACKBAR",
+                            msg: 'Bus Edited Successfully!'
+                        })
+                        this.handleClose()
+                    } else {
+                        this.alertDialog.current.handleClickOpen("Error Occurred!", `Something Went Wrong.Please Update Bus Again`)
+                    }
+                })
+            }
+
+        } else {
+            this.alertDialog.current.handleClickOpen("Form Validation Error!", result.error);
         }
     }
 
