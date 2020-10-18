@@ -1,3 +1,8 @@
+/*
+ *      Author          -   Ashen Senevirathne
+ *      IT Number       -   IT18178678
+ *
+ */
 import compare from "../CompareTime/compare";
 
 const getTripsByDay = (day, route) => {

@@ -1,5 +1,11 @@
+/*
+ *      Author          -   Ashen Senevirathne
+ *      IT Number       -   IT18178678
+ *
+ */
 import routeValidations from "./routeValidations";
 
+//Positive Test Case
 test('routeValidationsPositive', () => {
     expect(routeValidations({
         routeNumber: "507",
@@ -19,6 +25,7 @@ test('routeValidationsPositive', () => {
     });
 });
 
+//Negative Test Case
 test('routeValidationsNegative', () => {
     expect(routeValidations({
         routeNumber: "507",

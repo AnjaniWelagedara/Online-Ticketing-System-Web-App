@@ -30,7 +30,6 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import {connect} from "react-redux";
 import firebase from "../../Config/FirebaseConfig";
 import SidebarImage from "../../Images/sell-tickets-online-best-place.jpg"
-
 import GroupIcon from '@material-ui/icons/Group';
 import DirectionsBusIcon from '@material-ui/icons/DirectionsBus';
 import SubtitlesIcon from '@material-ui/icons/Subtitles';

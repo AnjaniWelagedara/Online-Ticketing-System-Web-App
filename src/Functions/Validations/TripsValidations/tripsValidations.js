@@ -1,3 +1,8 @@
+/*
+ *      Author          -   Ashen Senevirathne
+ *      IT Number       -   IT18178678
+ *
+ */
 import joi from "@hapi/joi"
 
 const tripsValidations = (trip) => {

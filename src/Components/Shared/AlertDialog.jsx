@@ -35,7 +35,6 @@ export default class AlertDialog extends Component {
         })
     };
 
-
     render() {
         return (
             <div>

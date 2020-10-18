@@ -1,19 +1,45 @@
+/*
+ *      Class Name   -   TripsDialog
+ *      Author          -   Ashen Senevirathne
+ *      IT Number       -   IT18178678
+ *
+ */
 import React, {Component, createRef} from 'react';
-import {connect} from "react-redux";
+
+/*
+* Components
+*/
+import AlertDialog from "./AlertDialog";
+
+/*
+* MUI Components
+*/
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Grid from '@material-ui/core/Grid';
-import Slide from "@material-ui/core/Slide";
 import FormControl from "@material-ui/core/FormControl";
+import Grid from '@material-ui/core/Grid';
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import Slide from "@material-ui/core/Slide";
 import Select from "@material-ui/core/Select";
-import {addTrip, editRoute, editTrip} from "../../Store/Actions/RouteActions";
-import AlertDialog from "./AlertDialog";
 import TextField from "@material-ui/core/TextField";
+
+/*
+* Redux Configurations
+*/
+import {connect} from "react-redux";
+
+/*
+* Redux Functions
+*/
+import {addTrip, editTrip} from "../../Store/Actions/RouteActions";
+
+/*
+* Validations
+*/
 import tripsValidations from "../../Functions/Validations/TripsValidations/tripsValidations";
 
 
@@ -154,13 +180,6 @@ class TripsDialog extends Component {
         return selectedBuses;
     }
 
-    updateStartDate = (date) => {
-        this.setState({
-                arrival: date
-            }
-        )
-    };
-
     render() {
         return (
             <React.Fragment>
@@ -286,7 +305,9 @@ class TripsDialog extends Component {
     }
 }
 
-
+/*
+* Firestore Connection
+*/
 const mapDispatchToProps = (dispatch) => {
     return {
         handleSnackBar: (status) => dispatch(status),

@@ -1,7 +1,8 @@
 import React from 'react'
-import { Route, Redirect } from 'react-router-dom';
-import {useSelector} from 'react-redux'
+
 import {isLoaded, isEmpty} from 'react-redux-firebase'
+import {Route, Redirect} from 'react-router-dom';
+import {useSelector} from 'react-redux'
 
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated or if auth is not
