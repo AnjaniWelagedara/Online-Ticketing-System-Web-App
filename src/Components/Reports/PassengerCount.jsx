@@ -1,6 +1,8 @@
-
 import React, {useRef, useState} from 'react';
-
+/*Registration Number: IT18180626
+Author: H.M.A.N.Welagedara
+Group Number: 2020-REG-WE-20*/
+import AlertDialog from "../Shared/AlertDialog";
 import {blue, red, yellow} from "@material-ui/core/colors";
 import Button from "@material-ui/core/Button";
 import {Doughnut, Line} from 'react-chartjs-2';
@@ -15,7 +17,7 @@ import Select from "@material-ui/core/Select";
 import TimelineIcon from '@material-ui/icons/Timeline';
 import Typography from "@material-ui/core/Typography";
 
-import AlertDialog from "../Shared/AlertDialog";
+
 
 
 const useStyles = makeStyles((theme) => ({

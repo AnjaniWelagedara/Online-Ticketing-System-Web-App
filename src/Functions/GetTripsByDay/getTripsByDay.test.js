@@ -1,5 +1,8 @@
+/*Registration Number: IT18180626
+Author: H.M.A.N.Welagedara
+Group Number: 2020-REG-WE-20*/
 const getTripsByDay = require('./getTripsByDay');
-
+/*Checked test cases*/
 test('getTripsByDayPositive', () => {
     expect(getTripsByDay("Tuesday", {
         distance: "12.6",
