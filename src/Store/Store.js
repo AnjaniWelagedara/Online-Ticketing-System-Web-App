@@ -1,9 +1,14 @@
+/*Registration Number: IT18180626
+Author: H.M.A.N.Welagedara
+Group Number: 2020-REG-WE-20*/
 import {applyMiddleware, compose, createStore} from "redux";
-import RootReducer from "./Reducers";
-import thunk from "redux-thunk";
+import firebase from "../Config/FirebaseConfig";
 import {getFirebase} from "react-redux-firebase";
 import {getFirestore, reduxFirestore} from "redux-firestore";
-import firebase from "../Config/FirebaseConfig";
+import RootReducer from "./Reducers";
+import thunk from "redux-thunk";
+/*Used singleton pattern to create single object*/
+
 
 let singletonStoreInstance = null;
 

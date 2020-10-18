@@ -1,5 +1,8 @@
+/*Registration Number: IT18180626
+Author: H.M.A.N.Welagedara
+Group Number: 2020-REG-WE-20*/
 const getPassengerCountByYear = require('./getPassengerCountByYear');
-
+/*Positive test case*/
 test('getPassengerCountByYearPositive', () => {
     expect(getPassengerCountByYear([{
         id: "3lO4CBtkq2pIV1CLP5yk",
@@ -25,6 +28,7 @@ test('getPassengerCountByYearPositive', () => {
         }]))
         .toStrictEqual([1,1]);
 });
+/*Negative test case*/
 
 test('getPassengerCountByYearNegative', () => {
     expect(getPassengerCountByYear([{
