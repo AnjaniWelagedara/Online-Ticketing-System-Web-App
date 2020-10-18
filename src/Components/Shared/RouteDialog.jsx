@@ -117,7 +117,9 @@ class RouteDialog extends Component {
             fare: this.state.fare,
             stations: this.state.data,
         }
+
         const result = routeValidations(details);
+
         if (result.status) {
             if (this.state.purpose === "Create") {
                 this.props.addRoute(details, res => {

@@ -10,7 +10,6 @@ import Box from '@material-ui/core/Box';
 import {Container} from "@material-ui/core";
 import TripsSmallView from "./Trips/TripsSmallView";
 import Grid from "@material-ui/core/Grid";
-import compare from "../../Functions/CompareTime/compare";
 import getTripsByDay from "./Trips/getTripsByDay";
 
 function TabPanel(props) {

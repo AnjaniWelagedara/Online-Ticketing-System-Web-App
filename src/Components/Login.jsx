@@ -1,23 +1,29 @@
+/*
+ *      Class Name   -   RoutesContainer
+ *      Author          -   Ashen Senevirathne
+ *      IT Number       -   IT18178678
+ *
+ */
 import React, {Component} from "react";
+
+import Copyrights from "./Shared/Copyrights";
+
 import {
     Avatar,
+    Box,
     Button,
+    Container,
     CssBaseline,
     TextField,
-    Box,
-    Link,
-    makeStyles,
     Typography,
-    Container,
 } from "@material-ui/core";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-
-import {Redirect} from "react-router-dom";
-import Copyrights from "./Shared/Copyrights";
-import {connect} from "react-redux";
-import {employeeSignIn} from "../Store/Actions/EmployeeSignInActions";
-import {compose} from "redux";
 import {withStyles} from "@material-ui/core/styles";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import {Redirect} from "react-router-dom";
+
+import {connect} from "react-redux";
+import {compose} from "redux";
+import {employeeSignIn} from "../Store/Actions/EmployeeSignInActions";
 
 const styles = (theme) => ({
     paper: {
@@ -49,7 +55,6 @@ class Login extends Component {
             empPassword: ""
         }
     }
-
 
     handleChange = (e) => {
         this.setState({
@@ -125,7 +130,6 @@ class Login extends Component {
 };
 
 const mapStateToProps = (state) => {
-
     return {
         auth: state.firebase.auth,
         profile: state.firebase.profile

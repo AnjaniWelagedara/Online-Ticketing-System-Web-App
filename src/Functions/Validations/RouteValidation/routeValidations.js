@@ -1,5 +1,11 @@
+/*
+ *      Author          -   Ashen Senevirathne
+ *      IT Number       -   IT18178678
+ *
+ */
 import joi from "@hapi/joi"
 
+//Validation For Route Model
 const routeValidations = (route) => {
     const schema = joi.object({
         routeNumber: joi.string().min(3).max(255).required().messages({

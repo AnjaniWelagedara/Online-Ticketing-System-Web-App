@@ -1,10 +1,11 @@
 import React, {Component} from "react";
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
+
 import Container from '@material-ui/core/Container';
-import Grid from "@material-ui/core/Grid";
+import CssBaseline from '@material-ui/core/CssBaseline';
 import DashboardItem from "./DashboardItem";
+import Grid from "@material-ui/core/Grid";
 import ReportsContainer from "./Reports/ReportsContainer";
+import Typography from '@material-ui/core/Typography';
 
 
 export default class DashBoard extends Component {

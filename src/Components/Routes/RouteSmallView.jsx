@@ -1,29 +1,56 @@
+/*
+ *      function Name   -   RouteSmallView
+ *      Author          -   Ashen Senevirathne
+ *      IT Number       -   IT18178678
+ *
+ */
 import React, {useRef} from 'react';
+
+/*
+* Components
+*/
+import ConfirmDialog from "../Shared/ConfirmDialog";
+import RouteDialog from "../Shared/RouteDialog";
+
+/*
+* MUI Components
+*/
+
 import {makeStyles} from '@material-ui/core/styles';
-import clsx from 'clsx';
+import {yellow} from '@material-ui/core/colors';
+
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
+import Chip from '@material-ui/core/Chip';
+import clsx from 'clsx';
 import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import {deepPurple, yellow} from '@material-ui/core/colors';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Grid from "@material-ui/core/Grid";
-import {deleteRoute} from "../../Store/Actions/RouteActions";
-import {connect} from "react-redux";
-import ConfirmDialog from "../Shared/ConfirmDialog";
-import RouteDialog from "../Shared/RouteDialog";
-import Chip from '@material-ui/core/Chip';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import TimelineIcon from '@material-ui/icons/Timeline';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import IconButton from '@material-ui/core/IconButton';
+import TimelineIcon from '@material-ui/icons/Timeline';
+import Typography from '@material-ui/core/Typography';
 
+/*
+* Redux Configurations
+*/
+import {connect} from "react-redux";
+
+/*
+* Redux Functions
+*/
+import {deleteRoute} from "../../Store/Actions/RouteActions";
+
+/*
+* MUI Styles
+*/
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "100%",
@@ -52,14 +79,9 @@ const useStyles = makeStyles((theme) => ({
 function RouteSmallView(props) {
     const classes = useStyles();
     const confirmDialogRef = useRef();
-    const routeDialogRef = useRef();
     const [expanded, setExpanded] = React.useState(false);
-
     const route = props.route;
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+    const routeDialogRef = useRef();
 
     const deleteRoute = () => {
         props.deleteRoute(route.id, res => {
@@ -77,6 +99,9 @@ function RouteSmallView(props) {
         })
     }
 
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
 
     return (
         <Grid item xs={12} sm={6} md={4} lg={4} container justify={"center"}>
@@ -160,6 +185,9 @@ function RouteSmallView(props) {
     );
 }
 
+/*
+* Firestore Connection
+*/
 const mapStateToProps = (state) => {
     return {
         email: state.firebase.auth.email

@@ -1,20 +1,45 @@
+/*
+ *      function Name   -   RoutesContainer
+ *      Author          -   Ashen Senevirathne
+ *      IT Number       -   IT18178678
+ *
+ */
 import React, {useRef} from "react";
-import {makeStyles, useTheme} from '@material-ui/core/styles';
-import RouteSmallView from "./RouteSmallView";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import Tooltip from '@material-ui/core/Tooltip';
+
+/*
+* Components
+*/
 import RouteDialog from "../Shared/RouteDialog";
+import RouteSmallView from "./RouteSmallView";
+
+/*
+* MUI Components
+*/
+import {makeStyles} from '@material-ui/core/styles';
+
+import AddIcon from '@material-ui/icons/Add';
+import Container from "@material-ui/core/Container";
+import Fab from '@material-ui/core/Fab';
+import Grid from "@material-ui/core/Grid";
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from "@material-ui/core/Typography";
+
+/*
+* Redux Configurations
+*/
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {firestoreConnect} from "react-redux-firebase";
 import {withRouter} from "react-router-dom";
+
+/*
+* Redux Functions
+*/
 import {deleteRoute} from "../../Store/Actions/RouteActions";
 
-
+/*
+* MUI Styles
+*/
 const useStyles = makeStyles((theme) => ({
     fab: {
         position: 'fixed',
@@ -23,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+/*
+* MUI Styles
+*/
 function RoutesContainer(props) {
     const classes = useStyles();
     let routes = props.routes;
@@ -64,6 +92,10 @@ function RoutesContainer(props) {
         </Container>
     );
 }
+
+/*
+* Firestore Connection
+*/
 
 const mapStateToProps = (state) => {
     return {

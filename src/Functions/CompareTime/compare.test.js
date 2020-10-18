@@ -1,3 +1,8 @@
+/*
+ *      Author          -   Ashen Senevirathne
+ *      IT Number       -   IT18178678
+ *
+ */
 const compare = require('./compare');
 
 test('comparePositive', () => {

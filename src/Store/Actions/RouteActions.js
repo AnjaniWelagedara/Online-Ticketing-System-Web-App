@@ -1,3 +1,4 @@
+//Function For Add Route
 export const addRoute = (details, callback) => {
     return (dispatch, getState, {getFirestore}) => {
 
@@ -11,6 +12,8 @@ export const addRoute = (details, callback) => {
             }
         ).then(() => {
             dispatch({type: 'HIDE_BACKDROP'});
+
+            //observer Call Back
             callback(
                 {
                     status: true,
@@ -19,6 +22,7 @@ export const addRoute = (details, callback) => {
         }).catch(err => {
             dispatch({type: 'HIDE_BACKDROP'});
             console.log("Error occurred while FIREBASE DATA UPLOADING", err);
+            //observer Call Back
             callback(
                 {
                     status: false,
@@ -30,6 +34,7 @@ export const addRoute = (details, callback) => {
     }
 };
 
+//Function For Delete Route
 export const deleteRoute = (id, callback) => {
     return (dispatch, getState, {getFirestore}) => {
 
@@ -59,6 +64,7 @@ export const deleteRoute = (id, callback) => {
     }
 };
 
+//Function For Edit Route
 export const editRoute = (id, details, callback) => {
     return (dispatch, getState, {getFirestore}) => {
 

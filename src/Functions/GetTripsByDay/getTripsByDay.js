@@ -1,6 +1,8 @@
-/*Registration Number: IT18180626
-Author: H.M.A.N.Welagedara
-Group Number: 2020-REG-WE-20*/
+/*
+ *      Author          -   Ashen Senevirathne
+ *      IT Number       -   IT18178678
+ *
+ */
 import compare from "../CompareTime/compare";
 
 const getTripsByDay = (day, route) => {

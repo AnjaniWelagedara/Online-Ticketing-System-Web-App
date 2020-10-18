@@ -1,6 +1,13 @@
+/*
+ *      Author          -   Ashen Senevirathne
+ *      IT Number       -   IT18178678
+ *
+ */
 import firebase from "firebase/app";
-import "firebase/firestore";
+
 import "firebase/auth";
+import "firebase/firestore";
+
 
 // Firebase Configurations
 const firebaseConfig = {
@@ -13,6 +20,7 @@ const firebaseConfig = {
     appId: "1:448243941382:web:608a55fd7fa7887f6c8387"
 };
 
+//New Singleton Instance
 let singletonInstance = null;
 
 class Singleton {
@@ -31,6 +39,8 @@ class Singleton {
     }
 }
 
+//Create singletonObject
 const singletonObject = new Singleton();
 
+//Export
 export default singletonObject;
