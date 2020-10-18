@@ -1,3 +1,6 @@
+/*Registration Number: IT18180626
+Author: H.M.A.N.Welagedara
+Group Number: 2020-REG-WE-20*/
 const getPassengerCount = (passengers) => {
     let localCount = 0;
     let ForeignCount = 0;

@@ -1,3 +1,6 @@
+/*Registration Number: IT18180626
+Author: H.M.A.N.Welagedara
+Group Number: 2020-REG-WE-20*/
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import Grid from "@material-ui/core/Grid";

@@ -1,18 +1,22 @@
+/*Registration Number: IT18180626
+Author: H.M.A.N.Welagedara
+Group Number: 2020-REG-WE-20*/
 import React, {createRef, useRef, useState} from 'react';
-import {makeStyles} from "@material-ui/core/styles";
+import AlertDialog from "../Shared/AlertDialog";
 import {blue, yellow} from "@material-ui/core/colors";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import {Line} from 'react-chartjs-2';
+import {makeStyles} from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
-import Select from "@material-ui/core/Select";
 import SearchIcon from '@material-ui/icons/Search';
+import Select from "@material-ui/core/Select";
 import TimelineIcon from '@material-ui/icons/Timeline';
 import Typography from "@material-ui/core/Typography";
-import AlertDialog from "../Shared/AlertDialog";
+
 
 const useStyles = makeStyles((theme) => ({
     paperTop: {
